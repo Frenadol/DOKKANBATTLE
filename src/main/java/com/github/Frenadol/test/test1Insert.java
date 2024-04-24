@@ -1,8 +1,6 @@
 package com.github.Frenadol.test;
 
 import com.github.Frenadol.model.dao.BookDAO;
-import  com.github.Frenadol.model.entity.Author;
-import  com.github.Frenadol.model.entity.Book;
 
 import java.util.ArrayList;
 

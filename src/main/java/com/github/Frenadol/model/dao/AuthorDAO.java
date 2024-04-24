@@ -1,8 +1,6 @@
 package com.github.Frenadol.model.dao;
 
 import com.github.Frenadol.model.connection.ConnectionMariaDB;
-import  com.github.Frenadol.model.entity.Author;
-import  com.github.Frenadol.model.entity.Book;
 
 import java.io.IOException;
 import java.sql.PreparedStatement;

@@ -2,7 +2,6 @@ package com.github.Frenadol.view;
 
 import com.github.Frenadol.App;
 import  com.github.Frenadol.model.dao.AuthorDAO;
-import  com.github.Frenadol.model.entity.Author;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

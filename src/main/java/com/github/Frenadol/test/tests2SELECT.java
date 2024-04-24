@@ -1,7 +1,6 @@
 package com.github.Frenadol.test;
 
 import  com.github.Frenadol.model.dao.AuthorDAO;
-import  com.github.Frenadol.model.entity.Author;
 
 public class tests2SELECT {
     public static void main(String[] args) {
