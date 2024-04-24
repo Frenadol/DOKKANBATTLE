@@ -1,6 +1,5 @@
 package com.github.Frenadol.view;
 
-import  com.github.Frenadol.model.entity.Author;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
