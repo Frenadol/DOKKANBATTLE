@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Objects;
 
 public class Characters {
+    Characters characters= new Characters();
     private int Id_character;
     private Type Type;
     private Class Character_class;
@@ -23,11 +24,14 @@ public class Characters {
         this.Type = type;
         this.Character_class = character_class;
         this.Name = name;
-        this.Categories = categories;
+        this.Categories = new HashSet<>();
         SuperAttack = superAttack;
         UltraSuperAttack = ultraSuperAttack;
         this.Rarety = rarety;
         this.Passive = passive;
+        addCategories("Saiyan");
+        addCategories("Hybrids Saiyans");
+        addCategories("Sworn enemies");
     }
 
     public int getId_character() {
@@ -129,4 +133,12 @@ public class Characters {
                 ", passive='" + Passive + '\'' +
                 '}';
     }
+
+    public void addCategories(String categoria) {
+        if (this.Categories == null) {
+            this.Categories = new HashSet<>();
+        }
+        this.Categories.add(categoria);
+    }
+
 }
