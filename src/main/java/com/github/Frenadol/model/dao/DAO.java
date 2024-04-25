@@ -12,5 +12,6 @@ public interface DAO<T,K> extends Closeable {
     T findByType(K type);
     T findByRarety(K rarety);
     List<T> findAll();
+    T delete(T entity) throws SQLException;
 
 }

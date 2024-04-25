@@ -2,21 +2,28 @@ package com.github.Frenadol.model.dao;
 
 import com.github.Frenadol.model.connection.ConnectionMariaDB;
 import com.github.Frenadol.model.entity.Characters;
+import com.github.Frenadol.model.entity.Class;
+import com.github.Frenadol.model.entity.Rarety;
+import com.github.Frenadol.model.entity.Type;
 
 import java.io.IOException;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public class CharactersDAO implements DAO<Characters,String> {
-    private final static String INSERT="INSERT INTO characters (Id_character,type,Character_class,Name,Categories,SuperAttack,UltraSuperAttack,Rarety,Passive) VALUES (?,?,?,?,?,?,?,?,?)";
+    private final static String INSERT="INSERT INTO characters (Id_character,Type,Character_class,Name,Categories,SuperAttack,UltraSuperAttack,Rarety,Passive) VALUES (?,?,?,?,?,?,?,?,?)";
     private final static String UPDATE="UPDATE author SET name=? WHERE dni=?";
-    private final static String FINDALL="SELECT a.dni,a.name FROM author AS a";
-    private final static String FINDBYIDCHARACTER="SELECT a.dni,a.name FROM author AS a WHERE a.dni=?";
-    private final static String DELETE="DELETE FROM author AS a WHERE a.dni=?";
+    private final static String FIND_BY_NAME ="SELECT FROM character where name=?";
+    private final static String FIND_BY_ID_CHARACTER ="SELECT FROM character where id_character=?";
+    private final static String FIND_BY_CATEGORY="SELECT FROM character where caterory=?";
+    private final static String FINDALL="SELECT * FROM character";
+    private static final String DELETE ="DELETE FROM character WHERE id_character=?";
+    private Connection conn;
+    public CharactersDAO(){
+        conn = ConnectionMariaDB.getConnection();
+    }
 
 public Characters saveCharacter(Characters entity) {
     Characters result = entity;
@@ -49,25 +56,7 @@ public Characters saveCharacter(Characters entity) {
             pst.setString(7,entity.getUltraSuperAttack());
             pst.setString(8, String.valueOf(entity.getRarety()));
             pst.setString(9,entity.getPassive());
-
-
             pst.executeUpdate();
-
-            //update cascada --> opcional
-            if (entity.getBooks() != null) {
-                List<Book> booksBefore = BookDAO.build().findByAuthor(entity);
-                List<Book> booksAfter = entity.getBooks();
-
-                List<Book> booksToBeRemoved = new ArrayList<>(booksBefore);
-                booksToBeRemoved.removeAll(booksAfter);
-
-                for (Book b : booksToBeRemoved) {
-                    BookDAO.build().delete(b);
-                }
-                for (Book b : booksAfter) {
-                    BookDAO.build().save(b);
-                }
-            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -77,39 +66,183 @@ public Characters saveCharacter(Characters entity) {
 
     @Override
     public Characters findById_character(Characters id) {
-        return null;
+     Characters result=null;
+        try(PreparedStatement pst = ConnectionMariaDB.getConnection().prepareStatement(FIND_BY_ID_CHARACTER)) {
+            pst.setInt(1, id.getId_character());
+            ResultSet res = pst.executeQuery();
+            if(res.next()){
+                result.setId_character(res.getInt("Id_character"));
+                result.setType(Type.valueOf(res.getString("Type")));
+                result.setCharacter_class(Class.valueOf(res.getString("Character_class")));
+                result.setName(res.getString("Name"));
+                result.setCategories((HashSet<String>) res.getObject("Categories"));
+                result.setSuperAttack(String.valueOf(Type.valueOf(res.getString("SuperAttack"))));
+                result.setUltraSuperAttack(String.valueOf(Type.valueOf(res.getString("UltraSuperAttack"))));
+                result.setRarety((Rarety) res.getObject("Rarety"));
+                result.setPassive(res.getString("Passive"));
+            //Lazy
+                //BookDAO bDAO = new BookDAO();
+                //result.setBooks(bDAO.findByAuthor(result));
+            }
+            res.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
-
-
-
     @Override
     public Characters findByName(String name) {
-        return null;
+        Characters result = null;
+        try (PreparedStatement pst = ConnectionMariaDB.getConnection().prepareStatement(FIND_BY_NAME)) {
+            pst.setString(1, name);
+            ResultSet res = pst.executeQuery();
+            if (res.next()) {
+                result = new Characters();
+                result.setId_character(res.getInt("Id_character"));
+                result.setType(Type.valueOf(res.getString("Type")));
+                result.setCharacter_class(Class.valueOf(res.getString("Character_class")));
+                result.setName(res.getString("Name"));
+                result.setCategories((HashSet<String>) res.getObject("Categories"));
+                result.setSuperAttack(String.valueOf(Type.valueOf(res.getString("SuperAttack"))));
+                result.setUltraSuperAttack(String.valueOf(Type.valueOf(res.getString("UltraSuperAttack"))));
+                result.setRarety((Rarety) res.getObject("Rarety"));
+                result.setPassive(res.getString("Passive"));
+            }
+            res.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return result;
     }
+
 
     @Override
     public Characters findByCategory(String category) {
-        return null;
+        Characters result = null;
+        try (PreparedStatement pst = ConnectionMariaDB.getConnection().prepareStatement(FIND_BY_CATEGORY)) {
+            pst.setString(1, category);
+            ResultSet res = pst.executeQuery();
+            if (res.next()) {
+                result = new Characters();
+                result.setId_character(res.getInt("Id_character"));
+                result.setType(Type.valueOf(res.getString("Type")));
+                result.setCharacter_class(Class.valueOf(res.getString("Character_class")));
+                result.setName(res.getString("Name"));
+                result.setCategories((HashSet<String>) res.getObject("Categories"));
+                result.setSuperAttack(String.valueOf(Type.valueOf(res.getString("SuperAttack"))));
+                result.setUltraSuperAttack(String.valueOf(Type.valueOf(res.getString("UltraSuperAttack"))));
+                result.setRarety((Rarety) res.getObject("Rarety"));
+                result.setPassive(res.getString("Passive"));
+            }
+            res.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return result;
     }
+
 
     @Override
     public Characters findByType(String type) {
-        return null;
+        Characters result = null;
+        try (PreparedStatement pst = ConnectionMariaDB.getConnection().prepareStatement(FIND_BY_CATEGORY)) {
+            pst.setString(1, type);
+            ResultSet res = pst.executeQuery();
+            if (res.next()) {
+                result = new Characters();
+                result.setId_character(res.getInt("Id_character"));
+                result.setType(Type.valueOf(res.getString("Type")));
+                result.setCharacter_class(Class.valueOf(res.getString("Character_class")));
+                result.setName(res.getString("Name"));
+                result.setCategories((HashSet<String>) res.getObject("Categories"));
+                result.setSuperAttack(String.valueOf(Type.valueOf(res.getString("SuperAttack"))));
+                result.setUltraSuperAttack(String.valueOf(Type.valueOf(res.getString("UltraSuperAttack"))));
+                result.setRarety((Rarety) res.getObject("Rarety"));
+                result.setPassive(res.getString("Passive"));
+            }
+            res.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return result;
     }
 
     @Override
     public Characters findByRarety(String rarety) {
-        return null;
+        Characters result = null;
+        try (PreparedStatement pst = ConnectionMariaDB.getConnection().prepareStatement(FIND_BY_CATEGORY)) {
+            pst.setString(1, rarety);
+            ResultSet res = pst.executeQuery();
+            if (res.next()) {
+                result = new Characters();
+                result.setId_character(res.getInt("Id_character"));
+                result.setType(Type.valueOf(res.getString("Type")));
+                result.setCharacter_class(Class.valueOf(res.getString("Character_class")));
+                result.setName(res.getString("Name"));
+                result.setCategories((HashSet<String>) res.getObject("Categories"));
+                result.setSuperAttack(String.valueOf(Type.valueOf(res.getString("SuperAttack"))));
+                result.setUltraSuperAttack(String.valueOf(Type.valueOf(res.getString("UltraSuperAttack"))));
+                result.setRarety((Rarety) res.getObject("Rarety"));
+                result.setPassive(res.getString("Passive"));
+            }
+            res.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return result;
     }
 
 
     @Override
     public List<Characters> findAll() {
-        return null;
+        List<Characters> result = new ArrayList<>();
+        try(PreparedStatement pst = ConnectionMariaDB.getConnection().prepareStatement(FINDALL)) {
+            ResultSet res = pst.executeQuery();
+            while(res.next()){
+                Characters character = new Characters();
+                character.setId_character(res.getInt("Id_character"));
+                character.setType(Type.valueOf(res.getString("Type")));
+                character.setCharacter_class(Class.valueOf(res.getString("Character_class")));
+                character.setName(res.getString("Name"));
+                character.setCategories((HashSet<String>) res.getObject("Categories"));
+                character.setSuperAttack(String.valueOf(Type.valueOf(res.getString("SuperAttack"))));
+                character.setUltraSuperAttack(String.valueOf(Type.valueOf(res.getString("UltraSuperAttack"))));
+                character.setRarety((Rarety) res.getObject("Rarety"));
+                character.setPassive(res.getString("Passive"));
+                result.add(character);
+            }
+            res.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     @Override
+    public Characters delete(Characters entity) throws SQLException {
+        if(entity!=null) {
+            try (PreparedStatement pst = conn.prepareStatement(DELETE)) {
+                pst.setString(1, String.valueOf(entity.getId_character()));
+                pst.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                entity = null;
+            }
+        }
+        return entity;
+    }
+
+
+
+    @Override
     public void close() throws IOException {
+
+    }
+    class CharactersLazy extends Characters{
 
     }
 }

@@ -134,11 +134,11 @@ public class Characters {
                 '}';
     }
 
-    public void addCategories(String categoria) {
+    public void addCategories(String categorie) {
         if (this.Categories == null) {
             this.Categories = new HashSet<>();
         }
-        this.Categories.add(categoria);
+        this.Categories.add(categorie);
     }
 
 }
