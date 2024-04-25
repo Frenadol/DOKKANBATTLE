@@ -1,6 +1,7 @@
 package com.github.Frenadol.model.dao;
 
 import  com.github.Frenadol.model.connection.ConnectionMariaDB;
+import com.github.Frenadol.model.entity.Characters;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -10,7 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BookDAO implements DAO<Book,String> {
+public class BookDAO implements DAO<Characters,String> {
     private static final String FINDALL ="SELECT b.isbn,b.title,b.id_author FROM book AS b";
     private static final String FINDBYID ="SELECT b.isbn,b.title,b.id_author FROM book AS b WHERE b.isbn=?";
     private static final String INSERT ="INSERT INTO book (isbn,title,id_author) VALUES (?,?,?)";
