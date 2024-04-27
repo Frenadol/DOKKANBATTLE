@@ -1,18 +1,15 @@
 package com.github.Frenadol.test;
 
-import com.github.Frenadol.model.dao.BookDAO;
-
-import java.util.ArrayList;
+import com.github.Frenadol.model.dao.CharactersDAO;
+import com.github.Frenadol.model.dao.UsersDAO;
+import com.github.Frenadol.model.entity.*;
+import com.github.Frenadol.model.entity.Class;
 
 public class test1Insert {
     public static void main(String[] args) {
-        Author a = new Author("1","Miguel de Cervantes",new ArrayList<>());
-        Book b = new Book();
-        b.setTitle("Don Quijote de la Mancha");
-        b.setIsbn("1");
-        b.setAuthor(a);
-        //En JAVA tengo el libro listo
-        BookDAO bDAO=new BookDAO();
-        bDAO.save(b);
+        Users u = new Users(1,"MIPOYAENMOTO","1234",null,2345);
+
+        UsersDAO udao= new UsersDAO();
+        udao.save(u);
     }
 }

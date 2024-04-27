@@ -1,37 +1,32 @@
 package com.github.Frenadol.model.entity;
 
-
-import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 
 public class Characters {
-    Characters characters= new Characters();
     private int Id_character;
     private Type Type;
     private Class Character_class;
     private String Name;
-    private HashSet<String> Categories;
+    private Category categories;
     private String SuperAttack;
     private String UltraSuperAttack;
     private Rarety Rarety;
     private String Passive;
-    public Characters(){
 
+
+    public Characters() {
     }
 
-    public Characters(int id_character, Type type, Class character_class, String name, HashSet<String> categories, String superAttack, String ultraSuperAttack, Rarety rarety, String passive) {
-        this.Id_character = id_character;
-        this.Type = type;
-        this.Character_class = character_class;
-        this.Name = name;
-        this.Categories = new HashSet<>();
+    public Characters(com.github.Frenadol.model.entity.Type type, Class character_class, String name, Category categories, String superAttack, String ultraSuperAttack, com.github.Frenadol.model.entity.Rarety rarety, String passive) {
+        Type = type;
+        Character_class = character_class;
+        Name = name;
+        this.categories = categories;
         SuperAttack = superAttack;
         UltraSuperAttack = ultraSuperAttack;
-        this.Rarety = rarety;
-        this.Passive = passive;
-        addCategories("Saiyan");
-        addCategories("Hybrids Saiyans");
-        addCategories("Sworn enemies");
+        Rarety = rarety;
+        Passive = passive;
     }
 
     public int getId_character() {
@@ -39,15 +34,15 @@ public class Characters {
     }
 
     public void setId_character(int id_character) {
-        this.Id_character = id_character;
+        Id_character = id_character;
     }
 
-    public Type getType() {
+    public com.github.Frenadol.model.entity.Type getType() {
         return Type;
     }
 
-    public void setType(Type type) {
-        this.Type = type;
+    public void setType(com.github.Frenadol.model.entity.Type type) {
+        Type = type;
     }
 
     public Class getCharacter_class() {
@@ -55,7 +50,7 @@ public class Characters {
     }
 
     public void setCharacter_class(Class character_class) {
-        this.Character_class = character_class;
+        Character_class = character_class;
     }
 
     public String getName() {
@@ -63,15 +58,15 @@ public class Characters {
     }
 
     public void setName(String name) {
-        this.Name = name;
+        Name = name;
     }
 
-    public HashSet<String> getCategories() {
-        return Categories;
+    public Category getCategories() {
+        return categories;
     }
 
-    public void setCategories(HashSet<String> categories) {
-        this.Categories = categories;
+    public void setCategories(Category categories) {
+        this.categories = categories;
     }
 
     public String getSuperAttack() {
@@ -90,12 +85,12 @@ public class Characters {
         UltraSuperAttack = ultraSuperAttack;
     }
 
-    public Rarety getRarety() {
+    public com.github.Frenadol.model.entity.Rarety getRarety() {
         return Rarety;
     }
 
-    public void setRarety(Rarety rarety) {
-        this.Rarety = rarety;
+    public void setRarety(com.github.Frenadol.model.entity.Rarety rarety) {
+        Rarety = rarety;
     }
 
     public String getPassive() {
@@ -103,7 +98,7 @@ public class Characters {
     }
 
     public void setPassive(String passive) {
-        this.Passive = passive;
+        Passive = passive;
     }
 
     @Override
@@ -122,23 +117,17 @@ public class Characters {
     @Override
     public String toString() {
         return "Characters{" +
-                "id_character=" + Id_character +
-                ", type=" + Type +
-                ", character_class=" + Character_class +
-                ", name='" + Name + '\'' +
-                ", categories=" + Categories +
+                "Id_character=" + Id_character +
+                ", Type=" + Type +
+                ", Character_class=" + Character_class +
+                ", Name='" + Name + '\'' +
+                ", categories=" + categories +
                 ", SuperAttack='" + SuperAttack + '\'' +
                 ", UltraSuperAttack='" + UltraSuperAttack + '\'' +
-                ", rarety=" + Rarety +
-                ", passive='" + Passive + '\'' +
+                ", Rarety=" + Rarety +
+                ", Passive='" + Passive + '\'' +
                 '}';
     }
-
-    public void addCategories(String categorie) {
-        if (this.Categories == null) {
-            this.Categories = new HashSet<>();
-        }
-        this.Categories.add(categorie);
-    }
-
 }
+
+

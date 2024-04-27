@@ -5,7 +5,7 @@ import  com.github.Frenadol.utils.XMLManager;
 
 public class saveConnection {
     public static void main(String[] args) {
-        ConnectionProperties c = new ConnectionProperties("localhost","3306","library","root","root");
+        ConnectionProperties c = new ConnectionProperties("localhost","3306","dokkanbattle","root","root");
         XMLManager.writeXML(c,"connection.xml");
     }
 }
