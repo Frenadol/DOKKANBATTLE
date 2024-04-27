@@ -5,8 +5,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface DAO<T,K> extends Closeable {
-    T saveCharacter(T entity);
-    T findById_character(T id);
+    T save(T entity);
+    T findById(T id);
     T findByName(K name);
     T findByCategory(K category);
     T findByType(K type);

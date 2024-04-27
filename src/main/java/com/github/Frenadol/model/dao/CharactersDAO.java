@@ -25,15 +25,22 @@ public class CharactersDAO implements DAO<Characters,String> {
         conn = ConnectionMariaDB.getConnection();
     }
 
-public Characters saveCharacter(Characters entity) {
+public Characters save(Characters entity) {
     Characters result = entity;
     if (entity == null || entity.getId_character() == 0) return result;
-    Characters c = findById_character(entity);  //si no está devuelve un autor por defecto
+    Characters c = findById(entity);  //si no está devuelve un autor por defecto
     if (c.getId_character() == 0) {
         //INSERT
         try (PreparedStatement pst = ConnectionMariaDB.getConnection().prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS)) {
             pst.setInt(1, entity.getId_character());
             pst.setString(2, entity.getName());
+            pst.setString(3, String.valueOf(entity.getCharacter_class()));
+            pst.setString(4,entity.getName());
+            pst.setString(5, String.valueOf(entity.getCategories()));
+            pst.setString(6,entity.getSuperAttack());
+            pst.setString(7,entity.getUltraSuperAttack());
+            pst.setString(8, String.valueOf(entity.getRarety()));
+            pst.setString(9,entity.getPassive());
             pst.executeUpdate();
                           ResultSet res = pst.getGeneratedKeys();
                             if(res.next()){
@@ -65,7 +72,7 @@ public Characters saveCharacter(Characters entity) {
 }
 
     @Override
-    public Characters findById_character(Characters id) {
+    public Characters findById(Characters id) {
      Characters result=null;
         try(PreparedStatement pst = ConnectionMariaDB.getConnection().prepareStatement(FIND_BY_ID_CHARACTER)) {
             pst.setInt(1, id.getId_character());
