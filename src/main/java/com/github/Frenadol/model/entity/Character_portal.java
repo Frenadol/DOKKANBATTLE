@@ -6,19 +6,21 @@ import java.util.Objects;
 public class Character_portal {
     private int Id_portal;
     private String Name_portal;
-    private List<Characters> Characterslist;
+    private List<Characters> Featured_characters;
     private float Chance;
     private int Summon;
+    private String BannerImage;
 
-    public Character_portal(int id_portal, String name_portal, List<Characters> characterslist, float chance, int summon) {
+    public Character_portal() {
+    }
+
+    public Character_portal(int id_portal, String name_portal, List<Characters> featured_characters, float chance, int summon, String bannerImage) {
         Id_portal = id_portal;
         Name_portal = name_portal;
-        Characterslist = characterslist;
+        Featured_characters = featured_characters;
         Chance = chance;
         Summon = summon;
-    }
-    public Character_portal(){
-
+        BannerImage = bannerImage;
     }
 
     public int getId_portal() {
@@ -37,12 +39,12 @@ public class Character_portal {
         Name_portal = name_portal;
     }
 
-    public List<Characters> getCharacterslist() {
-        return Characterslist;
+    public List<Characters> getFeatured_characters() {
+        return Featured_characters;
     }
 
-    public void setCharacterslist(List<Characters> characterslist) {
-        Characterslist = characterslist;
+    public void setFeatured_characters(List<Characters> featured_characters) {
+        Featured_characters = featured_characters;
     }
 
     public float getChance() {
@@ -59,6 +61,14 @@ public class Character_portal {
 
     public void setSummon(int summon) {
         Summon = summon;
+    }
+
+    public String getBannerImage() {
+        return BannerImage;
+    }
+
+    public void setBannerImage(String bannerImage) {
+        BannerImage = bannerImage;
     }
 
     @Override
@@ -79,9 +89,10 @@ public class Character_portal {
         return "Character_portal{" +
                 "Id_portal=" + Id_portal +
                 ", Name_portal='" + Name_portal + '\'' +
-                ", Characterslist=" + Characterslist +
+                ", Featured_characters=" + Featured_characters +
                 ", Chance=" + Chance +
                 ", Summon=" + Summon +
+                ", BannerImage='" + BannerImage + '\'' +
                 '}';
     }
 }

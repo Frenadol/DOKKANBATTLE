@@ -3,7 +3,7 @@ package com.github.Frenadol.test;
 import com.github.Frenadol.model.dao.CharactersDAO;
 import com.github.Frenadol.model.dao.UsersDAO;
 import com.github.Frenadol.model.entity.*;
-import com.github.Frenadol.model.entity.Class;
+
 
 import java.util.ArrayList;
 

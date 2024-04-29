@@ -2,7 +2,6 @@ package com.github.Frenadol.model.dao;
 
 import com.github.Frenadol.model.connection.ConnectionMariaDB;
 import com.github.Frenadol.model.entity.*;
-import com.github.Frenadol.model.entity.Class;
 
 import java.io.IOException;
 import java.sql.*;
@@ -27,21 +26,22 @@ public class CharactersDAO implements DAO<Characters,String> {
     public Characters save(Characters entity) {
         Characters result = entity;
         if (result == null || entity.getId_character() == 0) return result;
-        Characters c = findById(entity);  //si no está devuelve un autor por defecto
+        Characters c = findById(entity);
 
         if (result != null){
             //INSERT
             try (PreparedStatement pst = ConnectionMariaDB.getConnection().prepareStatement(INSERT,Statement.RETURN_GENERATED_KEYS)) {
-                pst.setInt(1, entity.getId_character());
-                pst.setString(2, (entity.getType().toString()));
-                pst.setString(3, entity.getClass().toString());
+               pst.setInt(1, entity.getId_character());
+               pst.setString(2, entity.getType());
+                pst.setString(3, entity.getCharacter_class());
                 pst.setString(4, entity.getName());
-                pst.setString(5, (entity.getCategories().toString()));
+                pst.setString(5, entity.getCategories());
                 pst.setString(6, entity.getSuperAttack());
                 pst.setString(7, entity.getUltraSuperAttack());
-                pst.setString(8, (entity.getRarety().toString()));
+                pst.setString(8, entity.getRarety());
                 pst.setString(9, entity.getPassive());
                 pst.executeUpdate();
+
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -49,13 +49,13 @@ public class CharactersDAO implements DAO<Characters,String> {
             //UPDATE
             try (PreparedStatement pst = ConnectionMariaDB.getConnection().prepareStatement(UPDATE)) {
                 pst.setInt(1, entity.getId_character());
-                pst.setString(2, String.valueOf(entity.getType()));
-                pst.setString(3, String.valueOf(entity.getCharacter_class()));
+                pst.setString(2, entity.getType());
+                pst.setString(3, entity.getCharacter_class());
                 pst.setString(4, entity.getName());
-                pst.setString(5, String.valueOf(entity.getCategories()));
+                pst.setString(5, entity.getCategories());
                 pst.setString(6, entity.getSuperAttack());
                 pst.setString(7, entity.getUltraSuperAttack());
-                pst.setString(8, String.valueOf(entity.getRarety()));
+                pst.setString(8, entity.getRarety());
                 pst.setString(9, entity.getPassive());
                 pst.executeUpdate();
             } catch (SQLException e) {
@@ -74,14 +74,8 @@ public class CharactersDAO implements DAO<Characters,String> {
             if (res.next()) {
                 result = new Characters();
                 result.setId_character(res.getInt("Id_character"));
-                result.setType(Type.valueOf(res.getString("Type")));
-                result.setCharacter_class(Class.valueOf(res.getString("Character_class")));
-                result.setName(res.getString("Name"));
-                result.setCategories(Category.valueOf(res.getString("Categories")));
-                result.setSuperAttack(res.getString("SuperAttack"));
-                result.setUltraSuperAttack(res.getString("UltraSuperAttack"));
-                result.setRarety((Rarety) res.getObject("Rarety"));
-                result.setPassive(res.getString("Passive"));
+                result.setType(res.getString("Type"));
+              result.setName(res.getString("Name"));
             }
             res.close();
         } catch (SQLException e) {
@@ -98,13 +92,13 @@ public class CharactersDAO implements DAO<Characters,String> {
                 if (res.next()) {
                     Characters c = new Characters();
                     c.setId_character(res.getInt("Id_character"));
-                    c.setType(Type.valueOf(res.getString("Type")));
-                    c.setCharacter_class(Class.valueOf(res.getString("Character_class")));
+                    c.setType(res.getString("Type"));
+                    c.setCharacter_class(res.getString("Character_class"));
                     c.setName(res.getString("Name"));
-                    c.setCategories(Category.valueOf(res.getString("Categories")));
+                    c.setCategories(res.getString("Categories"));
                     c.setSuperAttack(res.getString("SuperAttack"));
                     c.setUltraSuperAttack(res.getString("UltraSuperAttack"));
-                    c.setRarety((Rarety) res.getObject("Rarety"));
+                    c.setRarety(res.getString("Rarety"));
                     c.setPassive(res.getString("Passive"));
                     result = c;
                 }
@@ -123,13 +117,13 @@ public class CharactersDAO implements DAO<Characters,String> {
             while (res.next()) {
                 Characters character = new Characters();
                 character.setId_character(res.getInt("Id_character"));
-                character.setType(Type.valueOf(res.getString("Type")));
-                character.setCharacter_class(Class.valueOf(res.getString("Character_class")));
+                character.setType(res.getString("Type"));
+                character.setCharacter_class(res.getString("Character_class"));
                 character.setName(res.getString("Name"));
-                character.setCategories(Category.valueOf(res.getString("Categories")));
+                character.setCategories(res.getString("Categories"));
                 character.setSuperAttack(res.getString("SuperAttack"));
                 character.setUltraSuperAttack(res.getString("UltraSuperAttack"));
-                character.setRarety((Rarety) res.getObject("Rarety"));
+                character.setRarety(res.getString("Rarety"));
                 character.setPassive(res.getString("Passive"));
                 result.add(character);
             }
@@ -148,13 +142,13 @@ public class CharactersDAO implements DAO<Characters,String> {
             while (res.next()) {
                 Characters character = new Characters();
                 character.setId_character(res.getInt("Id_character"));
-                character.setType(Type.valueOf(res.getString("Type")));
-                character.setCharacter_class(Class.valueOf(res.getString("Character_class")));
+                character.setType(res.getString("Type"));
+                character.setCharacter_class(res.getString("Character_class"));
                 character.setName(res.getString("Name"));
-                character.setCategories(Category.valueOf(res.getString("Categories")));
+                character.setCategories(res.getString("Categories"));
                 character.setSuperAttack(res.getString("SuperAttack"));
                 character.setUltraSuperAttack(res.getString("UltraSuperAttack"));
-                character.setRarety((Rarety) res.getObject("Rarety"));
+                character.setRarety(res.getString("Rarety"));
                 character.setPassive(res.getString("Passive"));
                 result.add(character);
             }

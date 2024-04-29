@@ -2,7 +2,7 @@ package com.github.Frenadol.model.dao;
 
 import  com.github.Frenadol.model.connection.ConnectionMariaDB;
 import com.github.Frenadol.model.entity.*;
-import com.github.Frenadol.model.entity.Class;
+
 
 import java.io.IOException;
 import java.sql.*;
