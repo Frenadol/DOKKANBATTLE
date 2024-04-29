@@ -18,7 +18,8 @@ public class Characters {
     public Characters() {
     }
 
-    public Characters(com.github.Frenadol.model.entity.Type type, Class character_class, String name, Category categories, String superAttack, String ultraSuperAttack, com.github.Frenadol.model.entity.Rarety rarety, String passive) {
+    public Characters(int id_character, com.github.Frenadol.model.entity.Type type, Class character_class, String name, Category categories, String superAttack, String ultraSuperAttack, com.github.Frenadol.model.entity.Rarety rarety, String passive) {
+        Id_character = id_character;
         Type = type;
         Character_class = character_class;
         Name = name;

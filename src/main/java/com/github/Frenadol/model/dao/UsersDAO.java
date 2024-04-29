@@ -12,8 +12,8 @@ import java.util.List;
 public class UsersDAO implements DAO<Users,String> {
     private static final String FINDBY_ID_USER = "SELECT users FROM users WHERE Id_user=?";
     private static final String INSERT = "INSERT INTO users (Id_user,Name_user,Password,Character_list,Dragon_stones) VALUES (?,?,?,?,?)";
-    private static final String UPDATE = "UPDATE users SET name_user=? WHERE id_user=?";
-    private static final String DELETE = "DELETE FROM users WHERE id_user=?";
+    private static final String UPDATE = "UPDATE users SET name_user=? WHERE Id_user=?";
+    private static final String DELETE = "DELETE FROM users WHERE Id_user=?";
     private static final String FIND_BY_NAME = "SELECT users FROM users WHERE Name_user=?";
 
     private Connection conn;
@@ -35,7 +35,7 @@ public class UsersDAO implements DAO<Users,String> {
                         pst.setInt(1, entity.getId_user());
                         pst.setString(2, entity.getName_user());
                         pst.setString(3, entity.getPassword());
-                        pst.setArray(4, conn.createArrayOf("VARCHAR", entity.getCharacterslist().toArray()));
+                        pst.setString(4,entity.getCharacterslist().toString());
                         pst.setInt(5, entity.getDragon_stones());
                         pst.executeUpdate();
                     } catch (SQLException e) {

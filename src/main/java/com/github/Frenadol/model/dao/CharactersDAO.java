@@ -7,16 +7,15 @@ import com.github.Frenadol.model.entity.Class;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 public class CharactersDAO implements DAO<Characters,String> {
-    private final static String INSERT = "INSERT INTO characters (Id_character,Type,Character_class,Name,Categories,SuperAttack,UltraSuperAttack,Rarety,Passive) VALUES (?,?,?,?,?,?,?,?,?)";
-    private final static String UPDATE = "UPDATE characters SET name=? WHERE Id_character=?";
-    private final static String FIND_BY_NAME = "SELECT FROM characters where Name=?";
-    private final static String FIND_BY_ID_CHARACTER = "SELECT FROM characters where Id_character=?";
-    private final static String FIND_BY_CATEGORY = "SELECT FROM characters where Categories=?";
-    private final static String FINDALL = "SELECT * FROM character";
+    private final static String INSERT = "INSERT INTO characters (Id_character,Type,Class,Name,Categories,SuperAttack,UltraSuperAttack,Rarety,Passive) VALUES (?,?,?,?,?,?,?,?,?)";
+    private final static String UPDATE = "UPDATE characters SET Type=?, Class=?, Name=?, Categories=?, SuperAttack=?, UltraSuperAttack=?, Rarety=?, Passive=? WHERE Id_character=?";
+    private final static String FIND_BY_NAME = "SELECT * FROM characters where Name=?";
+    private final static String FIND_BY_ID_CHARACTER = "SELECT * FROM characters where Id_character=?";
+    private final static String FIND_BY_CATEGORY = "SELECT * FROM characters where Categories=?";
+    private final static String FINDALL = "SELECT * FROM characters";
     private static final String DELETE = "DELETE FROM characters WHERE Id_character=?";
     private Connection conn;
 
@@ -27,26 +26,22 @@ public class CharactersDAO implements DAO<Characters,String> {
     @Override
     public Characters save(Characters entity) {
         Characters result = entity;
-        if (entity == null || entity.getId_character() == 0) return result;
+        if (result == null || entity.getId_character() == 0) return result;
         Characters c = findById(entity);  //si no está devuelve un autor por defecto
-        if (c.getId_character() == 0) {
+
+        if (result != null){
             //INSERT
-            try (PreparedStatement pst = ConnectionMariaDB.getConnection().prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS)) {
+            try (PreparedStatement pst = ConnectionMariaDB.getConnection().prepareStatement(INSERT,Statement.RETURN_GENERATED_KEYS)) {
                 pst.setInt(1, entity.getId_character());
-                pst.setString(2, entity.getName());
-                pst.setString(3, String.valueOf(entity.getCharacter_class()));
+                pst.setString(2, (entity.getType().toString()));
+                pst.setString(3, entity.getClass().toString());
                 pst.setString(4, entity.getName());
-                pst.setString(5, String.valueOf(entity.getCategories()));
+                pst.setString(5, (entity.getCategories().toString()));
                 pst.setString(6, entity.getSuperAttack());
                 pst.setString(7, entity.getUltraSuperAttack());
-                pst.setString(8, String.valueOf(entity.getRarety()));
+                pst.setString(8, (entity.getRarety().toString()));
                 pst.setString(9, entity.getPassive());
                 pst.executeUpdate();
-                ResultSet res = pst.getGeneratedKeys();
-                if (res.next()) {
-                    entity.setId_character(res.getInt(1));
-                }
-
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -83,8 +78,8 @@ public class CharactersDAO implements DAO<Characters,String> {
                 result.setCharacter_class(Class.valueOf(res.getString("Character_class")));
                 result.setName(res.getString("Name"));
                 result.setCategories(Category.valueOf(res.getString("Categories")));
-                result.setSuperAttack(String.valueOf(Type.valueOf(res.getString("SuperAttack"))));
-                result.setUltraSuperAttack(String.valueOf(Type.valueOf(res.getString("UltraSuperAttack"))));
+                result.setSuperAttack(res.getString("SuperAttack"));
+                result.setUltraSuperAttack(res.getString("UltraSuperAttack"));
                 result.setRarety((Rarety) res.getObject("Rarety"));
                 result.setPassive(res.getString("Passive"));
             }
@@ -92,37 +87,33 @@ public class CharactersDAO implements DAO<Characters,String> {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return result;
     }
 
-    @Override
     public Characters findById(Characters id) {
-        Characters result = null;
+        Characters result=null;
         try (PreparedStatement pst = ConnectionMariaDB.getConnection().prepareStatement(FIND_BY_ID_CHARACTER)) {
             pst.setInt(1, id.getId_character());
-            ResultSet res = pst.executeQuery();
-            if (res.next()) {
-                result.setId_character(res.getInt("Id_character"));
-                result.setType(Type.valueOf(res.getString("Type")));
-                result.setCharacter_class(Class.valueOf(res.getString("Character_class")));
-                result.setName(res.getString("Name"));
-                result.setCategories(Category.valueOf(res.getString("Categories")));
-                result.setSuperAttack(String.valueOf(Type.valueOf(res.getString("SuperAttack"))));
-                result.setUltraSuperAttack(String.valueOf(Type.valueOf(res.getString("UltraSuperAttack"))));
-                result.setRarety((Rarety) res.getObject("Rarety"));
-                result.setPassive(res.getString("Passive"));
-                //Lazy
-                //BookDAO bDAO = new BookDAO();
-                //result.setBooks(bDAO.findByAuthor(result));
+            try(ResultSet res = pst.executeQuery()) {
+                if (res.next()) {
+                    Characters c = new Characters();
+                    c.setId_character(res.getInt("Id_character"));
+                    c.setType(Type.valueOf(res.getString("Type")));
+                    c.setCharacter_class(Class.valueOf(res.getString("Character_class")));
+                    c.setName(res.getString("Name"));
+                    c.setCategories(Category.valueOf(res.getString("Categories")));
+                    c.setSuperAttack(res.getString("SuperAttack"));
+                    c.setUltraSuperAttack(res.getString("UltraSuperAttack"));
+                    c.setRarety((Rarety) res.getObject("Rarety"));
+                    c.setPassive(res.getString("Passive"));
+                    result = c;
+                }
             }
-            res.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return result;
     }
-
 
     @Override
     public List<Characters> findAll() {
@@ -136,8 +127,8 @@ public class CharactersDAO implements DAO<Characters,String> {
                 character.setCharacter_class(Class.valueOf(res.getString("Character_class")));
                 character.setName(res.getString("Name"));
                 character.setCategories(Category.valueOf(res.getString("Categories")));
-                character.setSuperAttack(String.valueOf(Type.valueOf(res.getString("SuperAttack"))));
-                character.setUltraSuperAttack(String.valueOf(Type.valueOf(res.getString("UltraSuperAttack"))));
+                character.setSuperAttack(res.getString("SuperAttack"));
+                character.setUltraSuperAttack(res.getString("UltraSuperAttack"));
                 character.setRarety((Rarety) res.getObject("Rarety"));
                 character.setPassive(res.getString("Passive"));
                 result.add(character);
@@ -161,8 +152,8 @@ public class CharactersDAO implements DAO<Characters,String> {
                 character.setCharacter_class(Class.valueOf(res.getString("Character_class")));
                 character.setName(res.getString("Name"));
                 character.setCategories(Category.valueOf(res.getString("Categories")));
-                character.setSuperAttack(String.valueOf(Type.valueOf(res.getString("SuperAttack"))));
-                character.setUltraSuperAttack(String.valueOf(Type.valueOf(res.getString("UltraSuperAttack"))));
+                character.setSuperAttack(res.getString("SuperAttack"));
+                character.setUltraSuperAttack(res.getString("UltraSuperAttack"));
                 character.setRarety((Rarety) res.getObject("Rarety"));
                 character.setPassive(res.getString("Passive"));
                 result.add(character);
@@ -171,7 +162,6 @@ public class CharactersDAO implements DAO<Characters,String> {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return result;
     }
 
@@ -189,14 +179,12 @@ public class CharactersDAO implements DAO<Characters,String> {
         return entity;
     }
 
-
     @Override
     public void close() throws IOException {
 
     }
 
-    class CharactersLazy extends Characters {
-
+    public static CharactersDAO build(){
+        return new CharactersDAO();
     }
 }
-
