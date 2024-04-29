@@ -5,20 +5,20 @@ import java.util.Objects;
 
 public class Characters {
     private int Id_character;
-    private Type Type;
-    private Class Character_class;
+    private String Type;
+    private String Character_class;
     private String Name;
-    private Category categories;
+    private String categories;
     private String SuperAttack;
     private String UltraSuperAttack;
-    private Rarety Rarety;
+    private String Rarety;
     private String Passive;
 
-
     public Characters() {
+
     }
 
-    public Characters(int id_character, com.github.Frenadol.model.entity.Type type, Class character_class, String name, Category categories, String superAttack, String ultraSuperAttack, com.github.Frenadol.model.entity.Rarety rarety, String passive) {
+    public Characters(int id_character, String type, String character_class, String name, String categories, String superAttack, String ultraSuperAttack, String rarety, String passive) {
         Id_character = id_character;
         Type = type;
         Character_class = character_class;
@@ -38,19 +38,19 @@ public class Characters {
         Id_character = id_character;
     }
 
-    public com.github.Frenadol.model.entity.Type getType() {
+    public String getType() {
         return Type;
     }
 
-    public void setType(com.github.Frenadol.model.entity.Type type) {
+    public void setType(String type) {
         Type = type;
     }
 
-    public Class getCharacter_class() {
+    public String getCharacter_class() {
         return Character_class;
     }
 
-    public void setCharacter_class(Class character_class) {
+    public void setCharacter_class(String character_class) {
         Character_class = character_class;
     }
 
@@ -62,11 +62,11 @@ public class Characters {
         Name = name;
     }
 
-    public Category getCategories() {
+    public String getCategories() {
         return categories;
     }
 
-    public void setCategories(Category categories) {
+    public void setCategories(String categories) {
         this.categories = categories;
     }
 
@@ -86,11 +86,11 @@ public class Characters {
         UltraSuperAttack = ultraSuperAttack;
     }
 
-    public com.github.Frenadol.model.entity.Rarety getRarety() {
+    public String getRarety() {
         return Rarety;
     }
 
-    public void setRarety(com.github.Frenadol.model.entity.Rarety rarety) {
+    public void setRarety(String rarety) {
         Rarety = rarety;
     }
 
@@ -119,16 +119,16 @@ public class Characters {
     public String toString() {
         return "Characters{" +
                 "Id_character=" + Id_character +
-                ", Type=" + Type +
-                ", Character_class=" + Character_class +
+                ", Type='" + Type + '\'' +
+                ", Character_class='" + Character_class + '\'' +
                 ", Name='" + Name + '\'' +
-                ", categories=" + categories +
+                ", categories='" + categories + '\'' +
                 ", SuperAttack='" + SuperAttack + '\'' +
                 ", UltraSuperAttack='" + UltraSuperAttack + '\'' +
-                ", Rarety=" + Rarety +
+                ", Rarety='" + Rarety + '\'' +
                 ", Passive='" + Passive + '\'' +
                 '}';
     }
-}
 
+          }
 
