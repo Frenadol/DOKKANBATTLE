@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CharactersDAO implements DAO<Characters,String> {
-    private final static String INSERT = "INSERT INTO characters (Id_character,Type,Class,Name,Categories,SuperAttack,UltraSuperAttack,Rarety,Passive) VALUES (?,?,?,?,?,?,?,?,?)";
-    private final static String UPDATE = "UPDATE characters SET Type=?, Class=?, Name=?, Categories=?, SuperAttack=?, UltraSuperAttack=?, Rarety=?, Passive=? WHERE Id_character=?";
+    private final static String INSERT = "INSERT INTO characters (Id_character,Type,Class,Name,Categories,SuperAttack,UltraSuperAttack,Rarety,Passive,Visual) VALUES (?,?,?,?,?,?,?,?,?,?)";
+    private final static String UPDATE = "UPDATE characters SET Name where Id_character=?";
     private final static String FIND_BY_NAME = "SELECT * FROM characters where Name=?";
     private final static String FIND_BY_ID_CHARACTER = "SELECT * FROM characters where Id_character=?";
     private final static String FIND_BY_CATEGORY = "SELECT * FROM characters where Categories=?";
@@ -24,11 +24,10 @@ public class CharactersDAO implements DAO<Characters,String> {
 
     @Override
     public Characters save(Characters entity) {
-        Characters result = entity;
-        if (result == null || entity.getId_character() == 0) return result;
+        Characters result = new Characters();
+        if (entity == null || entity.getId_character() == 0) return result;
         Characters c = findById(entity);
-
-        if (result != null){
+        if (c == null){
             //INSERT
             try (PreparedStatement pst = ConnectionMariaDB.getConnection().prepareStatement(INSERT,Statement.RETURN_GENERATED_KEYS)) {
                pst.setInt(1, entity.getId_character());
@@ -40,6 +39,7 @@ public class CharactersDAO implements DAO<Characters,String> {
                 pst.setString(7, entity.getUltraSuperAttack());
                 pst.setString(8, entity.getRarety());
                 pst.setString(9, entity.getPassive());
+                pst.setBytes(10,entity.getVisual());
                 pst.executeUpdate();
 
             } catch (SQLException e) {
@@ -75,7 +75,14 @@ public class CharactersDAO implements DAO<Characters,String> {
                 result = new Characters();
                 result.setId_character(res.getInt("Id_character"));
                 result.setType(res.getString("Type"));
-              result.setName(res.getString("Name"));
+              result.setCharacter_class("Character_class");
+                result.setName(res.getString("Name"));
+                result.setCategories(res.getString("Categories"));
+                result.setSuperAttack(res.getString("SuperAttack"));
+                result.setUltraSuperAttack(res.getString("UltraSuperAttack"));
+                result.setRarety(res.getString("Rarety"));
+                result.setPassive(res.getString("Passive"));
+                result.setVisual(res.getBytes("Visual"));
             }
             res.close();
         } catch (SQLException e) {
@@ -83,7 +90,7 @@ public class CharactersDAO implements DAO<Characters,String> {
         }
         return result;
     }
-
+    @Override
     public Characters findById(Characters id) {
         Characters result=null;
         try (PreparedStatement pst = ConnectionMariaDB.getConnection().prepareStatement(FIND_BY_ID_CHARACTER)) {
@@ -93,13 +100,14 @@ public class CharactersDAO implements DAO<Characters,String> {
                     Characters c = new Characters();
                     c.setId_character(res.getInt("Id_character"));
                     c.setType(res.getString("Type"));
-                    c.setCharacter_class(res.getString("Character_class"));
+                    c.setCharacter_class(res.getString("Class"));
                     c.setName(res.getString("Name"));
                     c.setCategories(res.getString("Categories"));
                     c.setSuperAttack(res.getString("SuperAttack"));
                     c.setUltraSuperAttack(res.getString("UltraSuperAttack"));
                     c.setRarety(res.getString("Rarety"));
                     c.setPassive(res.getString("Passive"));
+                    c.setVisual(res.getBytes("Visual"));
                     result = c;
                 }
             }
@@ -108,6 +116,7 @@ public class CharactersDAO implements DAO<Characters,String> {
         }
         return result;
     }
+
 
     @Override
     public List<Characters> findAll() {

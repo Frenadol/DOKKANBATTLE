@@ -1,5 +1,6 @@
 package com.github.Frenadol.model.entity;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -9,12 +10,13 @@ public class Character_portal {
     private List<Characters> Featured_characters;
     private float Chance;
     private int Summon;
-    private String BannerImage;
+    private byte[] BannerImage;
 
     public Character_portal() {
+
     }
 
-    public Character_portal(int id_portal, String name_portal, List<Characters> featured_characters, float chance, int summon, String bannerImage) {
+    public Character_portal(int id_portal, String name_portal, List<Characters> featured_characters, float chance, int summon, byte[] bannerImage) {
         Id_portal = id_portal;
         Name_portal = name_portal;
         Featured_characters = featured_characters;
@@ -63,11 +65,11 @@ public class Character_portal {
         Summon = summon;
     }
 
-    public String getBannerImage() {
+    public byte[] getBannerImage() {
         return BannerImage;
     }
 
-    public void setBannerImage(String bannerImage) {
+    public void setBannerImage(byte[] bannerImage) {
         BannerImage = bannerImage;
     }
 
@@ -92,7 +94,8 @@ public class Character_portal {
                 ", Featured_characters=" + Featured_characters +
                 ", Chance=" + Chance +
                 ", Summon=" + Summon +
-                ", BannerImage='" + BannerImage + '\'' +
+                ", BannerImage=" + Arrays.toString(BannerImage) +
                 '}';
     }
 }
+

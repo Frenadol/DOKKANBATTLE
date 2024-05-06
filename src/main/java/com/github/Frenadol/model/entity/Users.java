@@ -7,18 +7,21 @@ public class Users {
     private int Id_user;
     private String Name_user;
     private String Password;
-    private List<Characters> Characterslist;
     private int Dragon_stones;
-    public Users(){
+    private List<Characters> Characters_list;
+    private boolean Admin;
+
+    public Users() {
 
     }
 
-    public Users(int id_user, String name_user, String password, List<Characters> characterslist, int dragon_stones) {
+    public Users(int id_user, String name_user, String password, int dragon_stones, List<Characters> characters_list, boolean admin) {
         Id_user = id_user;
         Name_user = name_user;
         Password = password;
-        Characterslist = characterslist;
         Dragon_stones = dragon_stones;
+        Characters_list = characters_list;
+        Admin = admin;
     }
 
     public int getId_user() {
@@ -45,20 +48,28 @@ public class Users {
         Password = password;
     }
 
-    public List<Characters> getCharacterslist() {
-        return Characterslist;
-    }
-
-    public void setCharacterslist(List<Characters> characterslist) {
-        Characterslist = characterslist;
-    }
-
     public int getDragon_stones() {
         return Dragon_stones;
     }
 
     public void setDragon_stones(int dragon_stones) {
         Dragon_stones = dragon_stones;
+    }
+
+    public List<Characters> getCharacters_list() {
+        return Characters_list;
+    }
+
+    public void setCharacters_list(List<Characters> characters_list) {
+        Characters_list = characters_list;
+    }
+
+    public boolean isAdmin() {
+        return Admin;
+    }
+
+    public void setAdmin(boolean admin) {
+        Admin = admin;
     }
 
     @Override
@@ -68,7 +79,6 @@ public class Users {
         Users users = (Users) o;
         return Id_user == users.Id_user;
     }
-
 
     @Override
     public int hashCode() {
@@ -82,6 +92,8 @@ public class Users {
                 ", Name_user='" + Name_user + '\'' +
                 ", Password='" + Password + '\'' +
                 ", Dragon_stones=" + Dragon_stones +
+                ", Characters_list=" + Characters_list +
+                ", Admin=" + Admin +
                 '}';
     }
 }

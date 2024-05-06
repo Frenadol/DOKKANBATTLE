@@ -1,5 +1,6 @@
 package com.github.Frenadol.model.entity;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -13,12 +14,13 @@ public class Characters {
     private String UltraSuperAttack;
     private String Rarety;
     private String Passive;
+    private byte[] Visual;
 
     public Characters() {
 
     }
 
-    public Characters(int id_character, String type, String character_class, String name, String categories, String superAttack, String ultraSuperAttack, String rarety, String passive) {
+    public Characters(int id_character, String type, String character_class, String name, String categories, String superAttack, String ultraSuperAttack, String rarety, String passive, byte[] visual) {
         Id_character = id_character;
         Type = type;
         Character_class = character_class;
@@ -28,6 +30,7 @@ public class Characters {
         UltraSuperAttack = ultraSuperAttack;
         Rarety = rarety;
         Passive = passive;
+        Visual = visual;
     }
 
     public int getId_character() {
@@ -102,6 +105,14 @@ public class Characters {
         Passive = passive;
     }
 
+    public byte[] getVisual() {
+        return Visual;
+    }
+
+    public void setVisual(byte[] visual) {
+        Visual = visual;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -127,8 +138,9 @@ public class Characters {
                 ", UltraSuperAttack='" + UltraSuperAttack + '\'' +
                 ", Rarety='" + Rarety + '\'' +
                 ", Passive='" + Passive + '\'' +
+                ", Visual=" + Arrays.toString(Visual) +
                 '}';
     }
 
-          }
+}
 
