@@ -8,7 +8,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CharactersDAO implements DAO<Characters, String> {
+public class CharactersDAO implements DAO<Characters,String> {
     private final static String INSERT = "INSERT INTO characters (Id_character,Type,Class,Name,Categories,SuperAttack,UltraSuperAttack,Rarety,Passive,Visual) VALUES (?,?,?,?,?,?,?,?,?,?)";
     private final static String UPDATE = "UPDATE characters SET Name where Id_character=?";
     private final static String FIND_BY_NAME = "SELECT * FROM characters where Name=?";
@@ -27,11 +27,11 @@ public class CharactersDAO implements DAO<Characters, String> {
         Characters result = new Characters();
         if (entity == null || entity.getId_character() == 0) return result;
         Characters c = findById(entity);
-        if (c == null) {
+        if (c == null){
             //INSERT
-            try (PreparedStatement pst = ConnectionMariaDB.getConnection().prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS)) {
-                pst.setInt(1, entity.getId_character());
-                pst.setString(2, entity.getType());
+            try (PreparedStatement pst = ConnectionMariaDB.getConnection().prepareStatement(INSERT,Statement.RETURN_GENERATED_KEYS)) {
+               pst.setInt(1, entity.getId_character());
+               pst.setString(2, entity.getType());
                 pst.setString(3, entity.getCharacter_class());
                 pst.setString(4, entity.getName());
                 pst.setString(5, entity.getCategories());
@@ -39,7 +39,7 @@ public class CharactersDAO implements DAO<Characters, String> {
                 pst.setString(7, entity.getUltraSuperAttack());
                 pst.setString(8, entity.getRarety());
                 pst.setString(9, entity.getPassive());
-                pst.setBytes(10, entity.getVisual());
+                pst.setBytes(10,entity.getVisual());
                 pst.executeUpdate();
 
             } catch (SQLException e) {
@@ -75,7 +75,7 @@ public class CharactersDAO implements DAO<Characters, String> {
                 result = new Characters();
                 result.setId_character(res.getInt("Id_character"));
                 result.setType(res.getString("Type"));
-                result.setCharacter_class("Character_class");
+              result.setCharacter_class("Character_class");
                 result.setName(res.getString("Name"));
                 result.setCategories(res.getString("Categories"));
                 result.setSuperAttack(res.getString("SuperAttack"));
@@ -90,13 +90,12 @@ public class CharactersDAO implements DAO<Characters, String> {
         }
         return result;
     }
-
     @Override
     public Characters findById(Characters id) {
-        Characters result = null;
+        Characters result=null;
         try (PreparedStatement pst = ConnectionMariaDB.getConnection().prepareStatement(FIND_BY_ID_CHARACTER)) {
             pst.setInt(1, id.getId_character());
-            try (ResultSet res = pst.executeQuery()) {
+            try(ResultSet res = pst.executeQuery()) {
                 if (res.next()) {
                     Characters c = new Characters();
                     c.setId_character(res.getInt("Id_character"));
@@ -188,7 +187,7 @@ public class CharactersDAO implements DAO<Characters, String> {
 
     }
 
-    public static CharactersDAO build() {
+    public static CharactersDAO build(){
         return new CharactersDAO();
     }
 }
