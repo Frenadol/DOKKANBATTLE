@@ -86,6 +86,12 @@ public class UsersDAO implements DAO<Users, String> {
             pst.setString(2, entity.getName_user());
             pst.setString(3, entity.getPassword());
             pst.setInt(4, entity.getDragon_stones());
+            if (entity.isAdmin() == true) {
+                pst.setInt(5, 1);
+            } else {
+                pst.setInt(5, 0);
+            }
+            pst.setBoolean(5, entity.isAdmin());
             pst.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

@@ -9,7 +9,9 @@ import java.util.List;
 
 public class test1Insert {
     public static void main(String[] args) {
-        Characters character = CharactersDAO.build().findByName("Goku Super Saiyan 2");
+        Characters characters=new Characters();
+        characters.setId_character(60);
+        Characters character = CharactersDAO.build().findById(characters);
         Users testUser = UsersDAO.build().findByName("Pepito");
         List<Characters> characters_list = new ArrayList<>();
         characters_list.add(character);

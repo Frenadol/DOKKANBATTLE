@@ -9,6 +9,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+import static com.github.Frenadol.view.AppController.loadFXML;
+
 /**
  * JavaFX App
  */
@@ -22,7 +24,7 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         //view/layout.fxml
-        View view = AppController.loadFXML(Scenes.ROOT);
+        View view = loadFXML(Scenes.ROOT);
         scene = new Scene(view.scene, 640, 480);
         currentController = (AppController) view.controller;
         currentController.onOpen(null);
@@ -31,7 +33,7 @@ public class App extends Application {
     }
 
     public static void setRoot(String fxml) throws IOException {
-        //  scene.setRoot(loadFXML(fxml));
+          //scene.setRoot(loadFXML(fxml));
     }
 
 

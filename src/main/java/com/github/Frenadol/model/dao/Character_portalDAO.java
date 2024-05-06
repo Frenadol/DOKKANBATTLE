@@ -13,14 +13,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Character_portalDAO implements DAO<Character_portal, String> {
-    private final static String INSERT = "INSERT INTO character_portal (Id_portal, Name_portal,Chance,Summon,BannerImage) VALUES (?,?,?,?,?)";
+    private final static String INSERT = "INSERT INTO character_portal (Id_portal,Name_portal,Chance,Summon,BannerImage) VALUES (?,?,?,?,?)";
     private final static String UPDATE = "UPDATE character_portal SET Name_portal=? WHERE Id_portal=?";
     private final static String FIND_BY_NAME = "SELECT * FROM character_portal where Name_portal=?";
-    private final static String FINDALL = "SELECT a.dni,a.name FROM author AS a";
-    private final static String FIND_BY_ID_PORTAL = "SELECT Name_portal,Feeatured characters FROM character_portal WHERE Id_portal=?";
+    private final static String FINDALL = "SELECT * from character_portal";
+    private final static String FIND_BY_ID_PORTAL = "SELECT * FROM character_portal WHERE Id_portal=?";
     private final static String DELETE = "DELETE FROM character_portal WHERE Id_portal=?";
     private static final String INSERT_LOCATED = "INSERT INTO located (Id_character, Id_portal) VALUES (?, ?)";
-    private static final String DELETE_LOCATED = "DELETE FROM obtained WHERE Id_character =?";
+    private static final String DELETE_LOCATED = "DELETE FROM obtained WHERE Id_character=?";
     private Connection conn;
 
     public Character_portalDAO() {
@@ -106,6 +106,9 @@ public class Character_portalDAO implements DAO<Character_portal, String> {
                     result = new Character_portal();
                     result.setId_portal(res.getInt("Id_portal"));
                     result.setName_portal(res.getString("Name_portal"));
+                    result.setChance(res.getFloat("Chance"));
+                    result.setSummon(res.getInt("Summon"));
+                    result.setBannerImage(res.getBytes("BannerImage"));
                 }
             }
         } catch (SQLException e) {
@@ -113,6 +116,7 @@ public class Character_portalDAO implements DAO<Character_portal, String> {
         }
         return result;
     }
+
 
     @Override
     public Character_portal findByName(String name) {
