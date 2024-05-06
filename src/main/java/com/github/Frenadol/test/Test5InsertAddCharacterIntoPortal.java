@@ -8,10 +8,14 @@ import com.github.Frenadol.model.entity.Characters;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Test5Insert {
+public class Test5InsertAddCharacterIntoPortal {
     public static void main(String[] args) {
-        Character_portal charactersPortals = Character_portalDAO.build().findByName("EL poder del puno del dragon");
-        Characters CharacterTest = CharactersDAO.build().findByName("Goku Super Saiyan 2");
+        Character_portal portalTest=new Character_portal();
+        Characters character1=new Characters();
+        character1.setId_character(60);
+        portalTest.setId_portal(1);
+       Character_portal charactersPortals=Character_portalDAO.build().findById(portalTest);
+        Characters CharacterTest = CharactersDAO.build().findById(character1);
         List<Characters> characters_list = new ArrayList<>();
         characters_list.add(CharacterTest);
         charactersPortals.setFeatured_characters(characters_list);

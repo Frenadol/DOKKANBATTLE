@@ -8,9 +8,9 @@ import com.github.Frenadol.model.entity.Characters;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Test4Insert {
+public class Test4InsertCreatePortalWithCharacters {
     public static void main(String[] args) {
-        Characters character = CharactersDAO.build().findByName("Goku Super Saiyan 3");
+        Characters character = CharactersDAO.build().findByName("Goku Kai");
         Character_portal charactersPortals = new Character_portal(1, "EL poder del puno del dragon", null, 20, 10, null);
         List<Characters> FeaturedCharacters = new ArrayList<>();
         FeaturedCharacters.add(character);
