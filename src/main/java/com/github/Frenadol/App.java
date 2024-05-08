@@ -1,15 +1,14 @@
 package com.github.Frenadol;
 
-import com.github.Frenadol.view.AppController;
 import com.github.Frenadol.view.Scenes;
-import com.github.Frenadol.view.View;
+import com.github.Frenadol.view.controller.AppController;
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-
-import static com.github.Frenadol.view.AppController.loadFXML;
 
 /**
  * JavaFX App
@@ -22,20 +21,20 @@ public class App extends Application {
 
     //este el es primer método que se ejecuta al abrir la primera ventana
     @Override
-    public void start(Stage stage) throws IOException {
-        //view/layout.fxml
-        View view = loadFXML(Scenes.ROOT);
-        scene = new Scene(view.scene, 640, 480);
-        currentController = (AppController) view.controller;
-        currentController.onOpen(null);
+   public void start(Stage stage) throws IOException {
+        scene = new Scene(loadFXML("initialMenu"), 640, 480);
         stage.setScene(scene);
         stage.show();
-    }
+            }
+
 
     public static void setRoot(String fxml) throws IOException {
-          //scene.setRoot(loadFXML(fxml));
+          scene.setRoot(loadFXML(fxml));
     }
-
+    private static Parent loadFXML(String fxml) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
+        return fxmlLoader.load();
+    }
 
     public static void main(String[] args) {
         launch();

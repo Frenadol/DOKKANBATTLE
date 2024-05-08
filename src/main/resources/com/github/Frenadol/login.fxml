@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
+
+<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="796.0" type="AnchorPane" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Text layoutX="291.0" layoutY="104.0" strokeType="OUTSIDE" strokeWidth="0.0" text="INTRODUZCA SUS DATOS PARA INICIAR SESION" />
+      <Text layoutX="387.0" layoutY="156.0" strokeType="OUTSIDE" strokeWidth="0.0" text="USUARIO" />
+      <Text layoutX="374.0" layoutY="268.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CONTRASEÑA" />
+      <TextField fx:id="usernameField" layoutX="338.0" layoutY="188.0" />
+      <TextField fx:id="passwordField" layoutX="338.0" layoutY="292.0" />
+   </children>
+</fx:root>

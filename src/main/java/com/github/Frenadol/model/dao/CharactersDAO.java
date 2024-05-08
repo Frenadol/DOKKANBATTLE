@@ -127,13 +127,14 @@ public class CharactersDAO implements DAO<Characters,String> {
                 Characters character = new Characters();
                 character.setId_character(res.getInt("Id_character"));
                 character.setType(res.getString("Type"));
-                character.setCharacter_class(res.getString("Character_class"));
+                character.setCharacter_class(res.getString("Class"));
                 character.setName(res.getString("Name"));
                 character.setCategories(res.getString("Categories"));
                 character.setSuperAttack(res.getString("SuperAttack"));
                 character.setUltraSuperAttack(res.getString("UltraSuperAttack"));
                 character.setRarety(res.getString("Rarety"));
                 character.setPassive(res.getString("Passive"));
+                character.setVisual(res.getBytes("Visual"));
                 result.add(character);
             }
             res.close();
