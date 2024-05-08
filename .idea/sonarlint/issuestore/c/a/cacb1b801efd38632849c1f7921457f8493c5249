@@ -1,0 +1,23 @@
+
+f	java:S117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÚİèÃ
+f	java:S117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÚİèÃ
+f	java:S117("QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(»†ş‡
+k	java:S1178"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(²†›ñùÿÿÿÿ
+o	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(šˆ‡É
+l	java:S116"WRename this field "Id_character" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(«Ô¢Ù
+i	java:S116	"ORename this field "Type" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÿà¢ªüÿÿÿÿ
+o	java:S116
+"ZRename this field "Character_class" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ê­èú
+i	java:S116"ORename this field "Name" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(É¬­Áøÿÿÿÿ
+k	java:S116"VRename this field "SuperAttack" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(³±Ìæ
+u	java:S116"[Rename this field "UltraSuperAttack" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ş¸şùÿÿÿÿ
+k	java:S116"QRename this field "Rarety" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ŒÜ™›şÿÿÿÿ
+g	java:S116"RRename this field "Passive" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ì„æ
+f	java:S116"QRename this field "Visual" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(È×šË
+W	java:S107"BConstructor has 10 parameters, which is greater than 7 authorized.(ÚİèÃ
+h	java:S100$"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¼“Îÿÿÿÿÿ
+c	java:S100("NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(»†ş‡
+b	java:S1004"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¸ l
+h	java:S1008"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(²†›ñùÿÿÿÿ
+F
+java:S1128"+Remove this unused import 'java.util.List'.(Õë±Äøÿÿÿÿ

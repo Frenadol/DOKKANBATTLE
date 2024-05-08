@@ -1,0 +1,16 @@
+
+
+java:S1104"QMake scene a static final constant or non-public and provide accessors if needed.(äõJ$a8dd28ed-d099-48f1-95b5-f3d417afe783
+
+java:S1104"QMake stage a static final constant or non-public and provide accessors if needed.(œ‰àJ$aff052b0-0354-400b-a3cd-2fbe63ac4ce9
+™
+java:S1104"]Make currentController a static final constant or non-public and provide accessors if needed.(½«İJ$04035d35-d80a-45b6-b904-d418d63c88b4
+g
+java:S1444"+Make this "public static scene" field final(äõJ$68723fee-ebd9-4317-affe-f732ada17c7a
+g
+java:S1444"+Make this "public static stage" field final(œ‰àJ$6384e9d1-87b9-40a4-b8a3-58cf78d8e516
+s
+java:S1444"7Make this "public static currentController" field final(½«İJ$eff53ade-5b1a-48eb-87e5-d726a6a0ad28
+š	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(ÿë¢ùøÿÿÿÿJ$06ed7da6-90c1-481e-83d6-ffde18104778
+q
+java:S2696"6Make the enclosing method "static" or remove this set.(§¯|J$6493478c-dfe5-4758-8cf9-6ee8f860bb98

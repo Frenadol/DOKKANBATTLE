@@ -1,4 +1,4 @@
-package com.github.Frenadol.view;
+package com.github.Frenadol.view.controller;
 
 import  com.github.Frenadol.App;
 

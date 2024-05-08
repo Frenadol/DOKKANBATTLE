@@ -1,6 +1,8 @@
-package com.github.Frenadol.view;
+package com.github.Frenadol.view.controller;
 
 import com.github.Frenadol.App;
+import com.github.Frenadol.view.Scenes;
+import com.github.Frenadol.view.View;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;

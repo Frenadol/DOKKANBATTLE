@@ -11,13 +11,12 @@ import java.util.List;
 public class Test4InsertCreatePortalWithCharacters {
     public static void main(String[] args) {
         Characters character = CharactersDAO.build().findByName("Goku Kai");
-        Character_portal charactersPortals = new Character_portal(1, "EL poder del puno del dragon", null, 20, 10, null);
+        Character_portal charactersPortals = new Character_portal(1, "La bestia despierta", null, 20, 10, null);
         List<Characters> FeaturedCharacters = new ArrayList<>();
         FeaturedCharacters.add(character);
         charactersPortals.setFeatured_characters(FeaturedCharacters);
         Character_portalDAO character_portalDAO = new Character_portalDAO();
-        character_portalDAO.insertCharacter_Portal(charactersPortals);
-        character_portalDAO.insertIntoLocated(charactersPortals);
+         character_portalDAO.updateCharacterPortal(charactersPortals);
 
 
     }
