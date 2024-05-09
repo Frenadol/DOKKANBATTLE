@@ -7,7 +7,7 @@ public class InitialMenuController {
 
     @FXML
     private void switchToLogin() throws Exception {
-        App.setRoot("login");
+        App.setRoot("Login");
     }
 
     @FXML
