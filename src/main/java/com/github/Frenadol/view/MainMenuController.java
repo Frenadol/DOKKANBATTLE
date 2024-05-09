@@ -2,75 +2,45 @@ package com.github.Frenadol.view;
 
 import com.github.Frenadol.App;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
+import javafx.stage.Stage;
 
-import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 
 public class MainMenuController {
 
     @FXML
-    private AnchorPane anchorPane;
-
-    private MediaPlayer mediaPlayer;
-
-    @FXML
-    private void initialize() {
-        // Configurar la imagen inicial en el AnchorPane
-        // Aquí puedes configurar la imagen inicial en el AnchorPane si es necesario
-    }
+    private MediaView mediaView;
 
     @FXML
     private void switchToCharacterList() throws Exception {
-        // Detener la reproducción del video antes de cambiar a la lista de personajes
-        stopVideo();
         App.setRoot("CharacterList");
     }
 
     @FXML
     private void playVideo() {
-        try {
+        // Obtener la ruta del video
+        URL videoUrl = getClass().getResource("/MediaContent/BlackRoseVideo.mp4");
+        Media media = new Media(videoUrl.toString());
+        MediaPlayer mediaPlayer = new MediaPlayer(media);
 
-            File videoFile = new File("C:/Users/ferna/IdeaProjects/PROYECTODOKKANBATTLE/src/main/resources/MediaContent/Black Rose Video.mp4"); // Cambia esto por la ruta de tu video
+        mediaView.setMediaPlayer(mediaPlayer);
 
+        // Reproducir el video
+        mediaPlayer.setAutoPlay(true);
 
-            String videoUrl = videoFile.toURI().toString();
+        // Cerrar la ventana cuando el video termina
+        mediaPlayer.setOnEndOfMedia(() -> {
+            mediaView.setMediaPlayer(null);
+        });
 
-
-            Media media = new Media(videoUrl);
-
-
-            mediaPlayer = new MediaPlayer(media);
-
-
-            MediaView mediaView = new MediaView(mediaPlayer);
-            mediaView.setFitWidth(anchorPane.getWidth());
-            mediaView.setFitHeight(anchorPane.getHeight());
-
-
-            anchorPane.getChildren().add(mediaView);
-            AnchorPane.setTopAnchor(mediaView, 0.0);
-            AnchorPane.setBottomAnchor(mediaView, 0.0);
-            AnchorPane.setLeftAnchor(mediaView, 0.0);
-            AnchorPane.setRightAnchor(mediaView, 0.0);
-
-            // Reproducir el video
-            mediaPlayer.play();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            showAlert("Error", "Error al reproducir el video.");
-        }
-    }
-
-    private void stopVideo() {
-        // Detener la reproducción del video si está en curso
-        if (mediaPlayer != null) {
-            mediaPlayer.stop();
-        }
     }
 
     private void showAlert(String title, String content) {

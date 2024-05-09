@@ -3,16 +3,15 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Text?>
+<?import javafx.scene.media.MediaView?>
 
-
-<AnchorPane fx:id="anchorPane" prefHeight="564.0" prefWidth="762.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.Frenadol.view.MainMenuController">
+<AnchorPane fx:id="anchorPane" prefHeight="640.0" prefWidth="879.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.Frenadol.view.MainMenuController">
    <children>
-      <Text layoutX="675.0" layoutY="227.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NEWS" />
-      <ImageView fitHeight="105.0" fitWidth="215.0" layoutX="639.0" layoutY="231.0" onMouseClicked="#playVideo" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="105.0" fitWidth="215.0" layoutX="694.0" layoutY="350.0" onMouseClicked="#playVideo" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../../MediaContent/TablerNews.png" />
          </image>
       </ImageView>
+      <MediaView fx:id="mediaView" fitHeight="350.0" fitWidth="350.0" layoutX="529.0" />
    </children>
 </AnchorPane>
