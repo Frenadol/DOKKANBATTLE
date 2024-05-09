@@ -12,6 +12,9 @@ public class SessionManager {
         return instance;
     }
 
+    public static void setUser(Users user) {
+    }
+
     public void setCurrentUser(Users user) {
         this.currentUser = user;
     }
