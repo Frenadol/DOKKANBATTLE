@@ -2,8 +2,7 @@ package com.github.Frenadol.view;
 
 public enum Scenes {
     ROOT("view/layout.fxml"),
-    MAIN("view/main.fxml"),
-    ABOUT("view/about.fxml"),
+    INITIALMENU("view/initialMenu.fxml"),
     CHARACTER_LIST("view/characterList.fxml"),;
 
     private String url;

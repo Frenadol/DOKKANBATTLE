@@ -138,6 +138,7 @@ public class UsersDAO implements DAO<Users, String> {
                 result = new Users();
                 result.setId_user(res.getInt("Id_user"));
                 result.setName_user(res.getString("Name_user"));
+                result.setPassword(res.getString("Password"));
                 result.setDragon_stones(res.getInt("Dragon_stones"));
             }
             res.close();

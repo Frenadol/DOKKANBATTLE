@@ -1,7 +1,6 @@
 package com.github.Frenadol;
 
-import com.github.Frenadol.view.Scenes;
-import com.github.Frenadol.view.controller.AppController;
+import com.github.Frenadol.view.AppController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -22,7 +21,7 @@ public class App extends Application {
     //este el es primer método que se ejecuta al abrir la primera ventana
     @Override
    public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("initialMenu"), 640, 480);
+        scene = new Scene(loadFXML("initialmenu"), 640, 480);
         stage.setScene(scene);
         stage.show();
             }
@@ -32,7 +31,7 @@ public class App extends Application {
           scene.setRoot(loadFXML(fxml));
     }
     private static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("view/"+fxml + ".fxml"));
         return fxmlLoader.load();
     }
 
