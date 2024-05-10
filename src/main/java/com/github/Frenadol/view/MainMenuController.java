@@ -1,10 +1,14 @@
 package com.github.Frenadol.view;
 
 import com.github.Frenadol.App;
+import com.github.Frenadol.model.entity.Characters;
+import com.github.Frenadol.model.entity.Users;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -13,11 +17,16 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ResourceBundle;
 
 public class MainMenuController {
 
     @FXML
     private MediaView mediaView;
+    @FXML
+    private TableView<Users> tableView;
+    @FXML
+    private TableColumn<Users,Integer> dragonStonesColumn;
 
     @FXML
     private void switchToCharacterList() throws Exception {
@@ -48,5 +57,9 @@ public class MainMenuController {
         alert.setTitle(title);
         alert.setContentText(content);
         alert.showAndWait();
+    }
+    @FXML
+    public void initialize(URL location, ResourceBundle resources){
+
     }
 }

@@ -80,6 +80,7 @@ public class Users {
         return Id_user == users.Id_user;
     }
 
+
     @Override
     public int hashCode() {
         return Objects.hash(Id_user);

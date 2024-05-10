@@ -1,7 +1,9 @@
 package com.github.Frenadol.view;
 
+import com.github.Frenadol.model.dao.CharactersDAO; // Agrega la importación de CharactersDAO
 import com.github.Frenadol.model.dao.UsersDAO;
 import com.github.Frenadol.model.entity.Users;
+import com.github.Frenadol.model.entity.Characters;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
@@ -18,6 +20,7 @@ public class RegisterUserController {
     private PasswordField password;
 
     private UsersDAO usersDAO = new UsersDAO();
+    private CharactersDAO charactersDAO = new CharactersDAO();
 
     @FXML
     public void registerUser() {
@@ -38,11 +41,17 @@ public class RegisterUserController {
         Users newUser = new Users();
         newUser.setName_user(username);
         newUser.setPassword(pass);
-        newUser.setDragon_stones(500);
+        newUser.setDragon_stones(1000);
         newUser.setAdmin(false);
 
-        usersDAO.updateUser(newUser);
 
+        Characters defaultcharacter = new Characters();
+        defaultcharacter.setId_character(99);
+        Characters defaultCharacter = charactersDAO.findById(defaultcharacter);
+        if (defaultCharacter != null) {
+            usersDAO.insertObtainedCharacters(newUser,defaultCharacter);
+            usersDAO.save(newUser);
+        }
         showAlert("Usuario registrado con éxito!");
     }
 

@@ -10,7 +10,8 @@ import java.util.List;
 
 public class CharactersDAO implements DAO<Characters,String> {
     private final static String INSERT = "INSERT INTO characters (Id_character,Type,Class,Name,Categories,SuperAttack,UltraSuperAttack,Rarety,Passive,Visual) VALUES (?,?,?,?,?,?,?,?,?,?)";
-    private final static String UPDATE = "UPDATE characters SET Name where Id_character=?";
+    private final static String UPDATE = "UPDATE characters SET Name=? WHERE Id_character=?";
+
     private final static String FIND_BY_NAME = "SELECT * FROM characters where Name=?";
     private final static String FIND_BY_ID_CHARACTER = "SELECT * FROM characters where Id_character=?";
     private final static String FIND_BY_CATEGORY = "SELECT * FROM characters where Categories=?";
@@ -143,7 +144,6 @@ public class CharactersDAO implements DAO<Characters,String> {
         }
         return result;
     }
-
     public List<Characters> findByCategory(String category) {
         List<Characters> result = new ArrayList<>();
         try (PreparedStatement pst = ConnectionMariaDB.getConnection().prepareStatement(FIND_BY_CATEGORY)) {
