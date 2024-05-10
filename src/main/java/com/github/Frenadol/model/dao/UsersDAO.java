@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 public class UsersDAO implements DAO<Users, String> {
     private static final String FINDBY_ID_USER = "SELECT * FROM users WHERE Id_user=?";
-    private static final String INSERT = "INSERT INTO users (Id_user,Name_user,Password,Dragon_stones,Admin) VALUES (?,?,?,?,?)";
+    private static final String INSERT = "INSERT INTO users (Name_user,Password,Dragon_stones,Admin) VALUES (?,?,?,?)";
     private static final String UPDATE = "UPDATE users SET Name_user=? WHERE Id_user=?";
     private static final String DELETE = "DELETE FROM users WHERE Id_user=?";
     private static final String FIND_BY_NAME = "SELECT * FROM users WHERE Name_user=?";
@@ -28,17 +28,19 @@ public class UsersDAO implements DAO<Users, String> {
 
     @Override
     public Users save(Users entity) {
-        if (entity == null || entity.getId_user() == 0) {
+        if (entity == null) {
             return null;
         }
         try {
+            Characters defaultCharacter=new Characters();
+            defaultCharacter.setId_character(99);
             if (findById(entity) == null) {
                 insertUser(entity);
-                insertObtainedCharacters(entity);
+                insertObtainedCharacters(entity,defaultCharacter);
             } else {
                 updateUser(entity);
                 deleteObtainedCharacters(entity);
-                insertObtainedCharacters(entity);
+                insertObtainedCharacters(entity,defaultCharacter);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -49,26 +51,25 @@ public class UsersDAO implements DAO<Users, String> {
 
     public void insertUser(Users entity) {
         try (PreparedStatement pst = conn.prepareStatement(INSERT)) {
-            pst.setInt(1, entity.getId_user());
-            pst.setString(2, entity.getName_user());
-            pst.setString(3, entity.getPassword());
-            pst.setInt(4, entity.getDragon_stones());
+            pst.setString(1, entity.getName_user());
+            pst.setString(2, entity.getPassword());
+            pst.setInt(3, entity.getDragon_stones());
             if (entity.isAdmin() == true) {
-                pst.setInt(5, 1);
+                pst.setInt(4, 1);
             } else {
-                pst.setInt(5, 0);
+                pst.setInt(4, 0);
             }
-            pst.setBoolean(5, entity.isAdmin());
+            pst.setBoolean(4, entity.isAdmin());
             pst.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public void insertObtainedCharacters(Users entity) {
+    public void insertObtainedCharacters(Users entity,Characters character) {
         List<Characters> characters = entity.getCharacters_list();
         if (characters != null) {
-            for (Characters character : characters) {
+            for (Characters allCharacters : characters) {
                 try (PreparedStatement pst = conn.prepareStatement(INSERT_OBTAINED)) {
                     pst.setInt(1, entity.getId_user());
                     pst.setInt(2, character.getId_character());

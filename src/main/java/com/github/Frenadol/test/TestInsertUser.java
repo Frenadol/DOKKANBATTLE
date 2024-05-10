@@ -18,7 +18,7 @@ public class TestInsertUser {
         characters_list.add(character);
         testUser.setCharacters_list(characters_list);
         UsersDAO udao = new UsersDAO();
-        udao.insertObtainedCharacters(testUser);
+        //udao.insertObtainedCharacters(testUser,);
         udao.updateUser(testUser);
     }
 }
