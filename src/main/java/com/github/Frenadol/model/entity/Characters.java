@@ -118,7 +118,7 @@ public class Characters {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Characters that = (Characters) o;
-        return Objects.equals(Name, that.Name);
+        return Id_character == that.Id_character;
     }
 
     @Override

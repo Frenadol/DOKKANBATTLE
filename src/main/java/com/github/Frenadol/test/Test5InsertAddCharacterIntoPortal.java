@@ -12,8 +12,8 @@ public class Test5InsertAddCharacterIntoPortal {
     public static void main(String[] args) {
         Character_portal portalTest=new Character_portal();
         Characters character1=new Characters();
-        character1.setId_character(60);
-        portalTest.setId_portal(1);
+        character1.setId_character(5);
+        portalTest.setId_portal(2);
        Character_portal charactersPortals=Character_portalDAO.build().findById(portalTest);
         Characters CharacterTest = CharactersDAO.build().findById(character1);
         List<Characters> characters_list = new ArrayList<>();

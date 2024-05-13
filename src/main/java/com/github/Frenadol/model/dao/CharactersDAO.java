@@ -117,7 +117,31 @@ public class CharactersDAO implements DAO<Characters,String> {
         }
         return result;
     }
-
+public Characters findRandomId(int id){
+    Characters result=null;
+    try (PreparedStatement pst = ConnectionMariaDB.getConnection().prepareStatement(FIND_BY_ID_CHARACTER)) {
+        pst.setInt(1, id);
+        try(ResultSet res = pst.executeQuery()) {
+            if (res.next()) {
+                Characters c = new Characters();
+                c.setId_character(res.getInt("Id_character"));
+                c.setType(res.getString("Type"));
+                c.setCharacter_class(res.getString("Class"));
+                c.setName(res.getString("Name"));
+                c.setCategories(res.getString("Categories"));
+                c.setSuperAttack(res.getString("SuperAttack"));
+                c.setUltraSuperAttack(res.getString("UltraSuperAttack"));
+                c.setRarety(res.getString("Rarety"));
+                c.setPassive(res.getString("Passive"));
+                c.setVisual(res.getBytes("Visual"));
+                result = c;
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return result;
+}
 
     @Override
     public List<Characters> findAll() {

@@ -12,7 +12,7 @@ public class Test3Insert {
     public static void main(String[] args) {
         Characters vhar = new Characters();
         Users testUser = new Users();
-        testUser.setId_user(999);
+        testUser.setId_user(999);   
         vhar.setId_character(550);
         Characters character = CharactersDAO.build().findById(vhar);
         Users users = UsersDAO.build().findById(testUser);

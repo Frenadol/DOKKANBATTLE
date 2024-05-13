@@ -36,11 +36,11 @@ public class UsersDAO implements DAO<Users, String> {
             defaultCharacter.setId_character(99);
             if (findById(entity) == null) {
                 insertUser(entity);
-                insertObtainedCharacters(entity,defaultCharacter);
+                insertObtainedCharacters(entity);
             } else {
                 updateUser(entity);
                 deleteObtainedCharacters(entity);
-                insertObtainedCharacters(entity,defaultCharacter);
+                insertObtainedCharacters(entity);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -66,10 +66,10 @@ public class UsersDAO implements DAO<Users, String> {
         }
     }
 
-    public void insertObtainedCharacters(Users entity,Characters character) {
+    public void insertObtainedCharacters(Users entity) {
         List<Characters> characters = entity.getCharacters_list();
         if (characters != null) {
-            for (Characters allCharacters : characters) {
+            for (Characters character : characters) {
                 try (PreparedStatement pst = conn.prepareStatement(INSERT_OBTAINED)) {
                     pst.setInt(1, entity.getId_user());
                     pst.setInt(2, character.getId_character());
@@ -83,21 +83,21 @@ public class UsersDAO implements DAO<Users, String> {
 
     public void updateUser(Users entity) {
         try (PreparedStatement pst = conn.prepareStatement(UPDATE)) {
-            pst.setInt(1, entity.getId_user());
-            pst.setString(2, entity.getName_user());
-            pst.setString(3, entity.getPassword());
-            pst.setInt(4, entity.getDragon_stones());
-            if (entity.isAdmin() == true) {
-                pst.setInt(5, 1);
+            pst.setString(1, entity.getName_user()); // Cambiado el índice del parámetro
+            pst.setString(2, entity.getPassword());
+            pst.setInt(3, entity.getDragon_stones());
+            if (entity.isAdmin()) {
+                pst.setInt(4, 1);
             } else {
-                pst.setInt(5, 0);
+                pst.setInt(4, 0);
             }
-            pst.setBoolean(5, entity.isAdmin());
+            pst.setInt(5, entity.getId_user()); // Cambiado el índice del parámetro
             pst.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
 
     public void deleteObtainedCharacters(Users entity) throws SQLException {
         try (PreparedStatement pst = conn.prepareStatement(DELETE_OBTAINED)) {
@@ -119,6 +119,10 @@ public class UsersDAO implements DAO<Users, String> {
                 if (res.next()) {
                     Users u = new Users();
                     u.setId_user(res.getInt("Id_user"));
+                    u.setName_user(res.getString("Name_user"));
+                    u.setPassword(res.getString("Password"));
+                    u.setDragon_stones(res.getInt("Dragon_stones"));
+                    u.setAdmin(res.getBoolean("Admin"));
                     result = u;
                 }
             }

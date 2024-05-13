@@ -5,6 +5,7 @@ public enum Scenes {
     INITIALMENU("view/initialMenu.fxml"),
     CHARACTER_LIST("view/characterList.fxml"),;
 
+
     private String url;
     Scenes(String url){
         this.url=url;
