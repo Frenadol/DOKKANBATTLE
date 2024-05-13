@@ -10,8 +10,8 @@ import java.util.List;
 
 public class Test4InsertCreatePortalWithCharacters {
     public static void main(String[] args) {
-        Characters character = CharactersDAO.build().findByName("Goku Kai");
-        Character_portal charactersPortals = new Character_portal(1, "La bestia despierta", null, 20, 10, null);
+        Characters character = CharactersDAO.build().findByName("Cooler Final Form");
+        Character_portal charactersPortals = Character_portalDAO.build().findByName("Dokkan Festival(Goku Black Super Saiyan Rose)");
         List<Characters> FeaturedCharacters = new ArrayList<>();
         FeaturedCharacters.add(character);
         charactersPortals.setFeatured_characters(FeaturedCharacters);

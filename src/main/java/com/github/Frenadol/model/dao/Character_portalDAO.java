@@ -28,14 +28,13 @@ public class Character_portalDAO implements DAO<Character_portal, String> {
     }
 
 
-    @Override
     public Character_portal save(Character_portal entity) {
         if (entity == null || entity.getId_portal() == 0) {
             return null;
         }
         try {
             if (findById(entity) == null) {
-                insertCharacter_Portal(entity);
+                insertCharacterPortal(entity);
                 insertIntoLocated(entity);
             } else {
                 updateCharacterPortal(entity);
@@ -49,7 +48,7 @@ public class Character_portalDAO implements DAO<Character_portal, String> {
         return entity;
     }
 
-    public void insertCharacter_Portal(Character_portal entity) {
+    public void insertCharacterPortal(Character_portal entity) {
         try (PreparedStatement pst = conn.prepareStatement(INSERT)) {
             pst.setInt(1, entity.getId_portal());
             pst.setString(2, entity.getName_portal());
@@ -76,6 +75,22 @@ public class Character_portalDAO implements DAO<Character_portal, String> {
             }
         }
     }
+public void findAllLocated(Character_portal entity) {
+        List<Characters> characters = entity.getFeatured_characters();
+        if (characters != null) {
+            for (Characters character : characters) {
+                try (PreparedStatement pst = conn.prepareStatement(INSERT_LOCATED)) {
+                    pst.setInt(1, character.getId_character());
+                    pst.setInt(2, entity.getId_portal());
+                    pst.executeUpdate();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+
 
     public void updateCharacterPortal(Character_portal entity) {
         try (PreparedStatement pst = conn.prepareStatement(UPDATE)) {
@@ -154,7 +169,6 @@ public class Character_portalDAO implements DAO<Character_portal, String> {
         return result;
     }
 
-
     @Override
     public Character_portal delete(Character_portal entity) {
         if (entity != null) {
@@ -168,6 +182,8 @@ public class Character_portalDAO implements DAO<Character_portal, String> {
         }
         return entity;
     }
+
+
 
 
     @Override

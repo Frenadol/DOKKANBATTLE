@@ -82,8 +82,8 @@ public class CharacterListController extends Controller implements Initializable
 
                 // Crear un ImageView para mostrar la imagen
                 ImageView imageView = new ImageView(image);
-                imageView.setFitWidth(100);  // Ajustar el ancho
-                imageView.setFitHeight(100); // Ajustar la altura
+                imageView.setFitWidth(200);  // Ajustar el ancho
+                imageView.setFitHeight(200); // Ajustar la altura
 
                 // Agregar un evento de clic al ImageView
                 imageView.setOnMouseClicked(event -> {

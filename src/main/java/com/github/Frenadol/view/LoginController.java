@@ -2,6 +2,7 @@ package com.github.Frenadol.view;
 
 import com.github.Frenadol.App;
 import com.github.Frenadol.model.dao.UsersDAO;
+import com.github.Frenadol.model.entity.Session;
 import com.github.Frenadol.model.entity.Users;
 import com.github.Frenadol.utils.SessionManager;
 import javafx.fxml.FXML;
@@ -30,6 +31,7 @@ public class LoginController {
 
         if (userLogin != null) {
             if (pass.equals(userLogin.getPassword()) && username.equals(userLogin.getName_user()) ) {
+                Session.getInstance().logIn(userLogin);
                 App.setRoot("mainMenu");
             } else {
                 Alert alert = new Alert(AlertType.ERROR);
@@ -43,4 +45,3 @@ public class LoginController {
         }
     }
 }
-

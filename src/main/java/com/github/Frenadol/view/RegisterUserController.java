@@ -1,6 +1,7 @@
 package com.github.Frenadol.view;
 
-import com.github.Frenadol.model.dao.CharactersDAO; // Agrega la importación de CharactersDAO
+import com.github.Frenadol.App;
+import com.github.Frenadol.model.dao.CharactersDAO;
 import com.github.Frenadol.model.dao.UsersDAO;
 import com.github.Frenadol.model.entity.Users;
 import com.github.Frenadol.model.entity.Characters;
@@ -10,6 +11,8 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
+
+import java.io.IOException;
 
 public class RegisterUserController {
     @FXML
@@ -22,7 +25,6 @@ public class RegisterUserController {
     private UsersDAO usersDAO = new UsersDAO();
     private CharactersDAO charactersDAO = new CharactersDAO();
 
-    @FXML
     public void registerUser() {
         String username = textUsername.getText();
         String pass = password.getText();
@@ -38,6 +40,14 @@ public class RegisterUserController {
             return;
         }
 
+        Characters initialCharacter = new Characters();
+        initialCharacter.setId_character(99);
+        Characters defaultCharacter = charactersDAO.findById(initialCharacter);
+        if (defaultCharacter == null) {
+            showAlert("Error al registrar el usuario. El personaje predeterminado no se encontró.");
+            return;
+        }
+
         Users newUser = new Users();
         newUser.setName_user(username);
         newUser.setPassword(pass);
@@ -45,14 +55,16 @@ public class RegisterUserController {
         newUser.setAdmin(false);
 
 
-        Characters defaultcharacter = new Characters();
-        defaultcharacter.setId_character(99);
-        Characters defaultCharacter = charactersDAO.findById(defaultcharacter);
-        if (defaultCharacter != null) {
-            usersDAO.insertObtainedCharacters(newUser,defaultCharacter);
-            usersDAO.save(newUser);
-        }
+        usersDAO.insertUser(newUser);
+
+
+        usersDAO.insertObtainedCharacters(newUser);
+
         showAlert("Usuario registrado con éxito!");
+    }
+
+    public void goToInitialMenu() throws IOException {
+        App.setRoot("initialMenu");
     }
 
     private void showAlert(String message) {

@@ -1,5 +1,6 @@
 package com.github.Frenadol.model.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -10,9 +11,11 @@ public class Users {
     private int Dragon_stones;
     private List<Characters> Characters_list;
     private boolean Admin;
+    private boolean characterAssigned; // Nuevo campo para registrar si el personaje con ID 99 se ha asignado
 
     public Users() {
-
+        Characters_list = new ArrayList<>();
+        characterAssigned = false; // Por defecto, el personaje no está asignado
     }
 
     public Users(int id_user, String name_user, String password, int dragon_stones, List<Characters> characters_list, boolean admin) {
@@ -22,6 +25,7 @@ public class Users {
         Dragon_stones = dragon_stones;
         Characters_list = characters_list;
         Admin = admin;
+        characterAssigned = false; // Por defecto, el personaje no está asignado
     }
 
     public int getId_user() {
@@ -72,6 +76,22 @@ public class Users {
         Admin = admin;
     }
 
+    public boolean isCharacterAssigned() {
+        return characterAssigned;
+    }
+
+    public void setCharacterAssigned(boolean characterAssigned) {
+        this.characterAssigned = characterAssigned;
+    }
+
+    public void addCharacter(Characters character) {
+        Characters_list.add(character);
+    }
+
+    public void removeCharacter(Characters character) {
+        Characters_list.remove(character);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -79,7 +99,6 @@ public class Users {
         Users users = (Users) o;
         return Id_user == users.Id_user;
     }
-
 
     @Override
     public int hashCode() {
