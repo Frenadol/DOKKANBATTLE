@@ -3,6 +3,8 @@ package com.github.Frenadol.model.dao;
 import com.github.Frenadol.model.connection.ConnectionMariaDB;
 import com.github.Frenadol.model.entity.Character_portal;
 import com.github.Frenadol.model.entity.Characters;
+import com.github.Frenadol.model.entity.Users;
+import com.github.Frenadol.view.SummonsMenuController;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -19,6 +21,8 @@ public class Character_portalDAO implements DAO<Character_portal, String> {
     private final static String FINDALL = "SELECT * from character_portal";
     private final static String FIND_BY_ID_PORTAL = "SELECT * FROM character_portal WHERE Id_portal=?";
     private final static String DELETE = "DELETE FROM character_portal WHERE Id_portal=?";
+    private final static String FIND_IDS_FROM_LOCATED="SELECT cha.Name, cha.Visual, lo.Id_character FROM Characters cha, located lo WHERE lo.Id_character = cha.Id_character AND lo.Id_character = ?";
+    private final static String FIND_CHARACTER_FROM_LOCATED="SELECT Id_portal,Id_character from located where Id_portal=? and Id_character=?";
     private static final String INSERT_LOCATED = "INSERT INTO located (Id_character, Id_portal) VALUES (?, ?)";
     private static final String DELETE_LOCATED = "DELETE FROM obtained WHERE Id_character=?";
     private Connection conn;
@@ -47,7 +51,20 @@ public class Character_portalDAO implements DAO<Character_portal, String> {
 
         return entity;
     }
-
+public int findCharacter(int idUser,int idCharacter){
+        int numberCharacter=0;
+        try(PreparedStatement pst=conn.prepareStatement(FIND_CHARACTER_FROM_LOCATED)){
+            pst.setInt(1,idUser);
+            pst.setInt(2,idCharacter);
+            ResultSet res = pst.executeQuery();
+            if(res.next()){
+           numberCharacter=res.getInt("Id_character");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    return numberCharacter;
+}
     public void insertCharacterPortal(Character_portal entity) {
         try (PreparedStatement pst = conn.prepareStatement(INSERT)) {
             pst.setInt(1, entity.getId_portal());
@@ -75,21 +92,29 @@ public class Character_portalDAO implements DAO<Character_portal, String> {
             }
         }
     }
-public void findAllLocated(Character_portal entity) {
-        List<Characters> characters = entity.getFeatured_characters();
-        if (characters != null) {
-            for (Characters character : characters) {
-                try (PreparedStatement pst = conn.prepareStatement(INSERT_LOCATED)) {
-                    pst.setInt(1, character.getId_character());
-                    pst.setInt(2, entity.getId_portal());
-                    pst.executeUpdate();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+public Characters findAllLocated(int  id) {
+    Characters characters = new Characters();
+    if (id > 0) {
+        try (PreparedStatement pst = conn.prepareStatement(FIND_IDS_FROM_LOCATED)) {;
+            pst.setInt(1, id);
+            ResultSet set = pst.executeQuery();
+            if (set.next()) {
+                characters = new Characters();
+                characters.setId_character(set.getInt("Id_character"));
+                characters.setName(set.getString("Name"));
+                characters.setVisual(set.getBytes("Visual"));
+
+
             }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+
     }
 
+    return characters;
+}
 
 
     public void updateCharacterPortal(Character_portal entity) {

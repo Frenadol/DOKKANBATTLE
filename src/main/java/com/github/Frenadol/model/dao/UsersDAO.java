@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 public class UsersDAO implements DAO<Users, String> {
     private static final String FINDBY_ID_USER = "SELECT * FROM users WHERE Id_user=?";
     private static final String INSERT = "INSERT INTO users (Name_user,Password,Dragon_stones,Admin) VALUES (?,?,?,?)";
-    private static final String UPDATE = "UPDATE users SET Name_user=? WHERE Id_user=?";
+    private static final String UPDATE = "UPDATE users SET Dragon_stones=? WHERE Dragon_stones=?";
     private static final String DELETE = "DELETE FROM users WHERE Id_user=?";
     private static final String FIND_BY_NAME = "SELECT * FROM users WHERE Name_user=?";
     private static final String INSERT_OBTAINED = "INSERT INTO obtained (Id_user, Id_character) VALUES (?, ?)";
@@ -32,15 +32,11 @@ public class UsersDAO implements DAO<Users, String> {
             return null;
         }
         try {
-            Characters defaultCharacter=new Characters();
-            defaultCharacter.setId_character(99);
             if (findById(entity) == null) {
                 insertUser(entity);
-                insertObtainedCharacters(entity);
             } else {
                 updateUser(entity);
                 deleteObtainedCharacters(entity);
-                insertObtainedCharacters(entity);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -66,20 +62,27 @@ public class UsersDAO implements DAO<Users, String> {
         }
     }
 
-    public void insertObtainedCharacters(Users entity) {
-        List<Characters> characters = entity.getCharacters_list();
-        if (characters != null) {
-            for (Characters character : characters) {
+
+
+
+    public void insertObtainedCharacters(int userKey, int cKey) {
+        if (userKey != 0 && cKey!=0) {
+             // Verifica si Id_character no es nulo
                 try (PreparedStatement pst = conn.prepareStatement(INSERT_OBTAINED)) {
-                    pst.setInt(1, entity.getId_user());
-                    pst.setInt(2, character.getId_character());
+                    pst.setInt(1, userKey);
+                    pst.setInt(2, cKey);
                     pst.executeUpdate();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
+            } else{
+                System.out.println("Warning: Character without Id_character.");
+
             }
-        }
+
+
     }
+
 
     public void updateUser(Users entity) {
         try (PreparedStatement pst = conn.prepareStatement(UPDATE)) {

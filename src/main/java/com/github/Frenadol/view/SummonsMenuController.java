@@ -1,98 +1,143 @@
-package com.github.Frenadol.view;
+    package com.github.Frenadol.view;
 
-import com.github.Frenadol.model.dao.Character_portalDAO;
-import com.github.Frenadol.model.dao.CharactersDAO;
-import com.github.Frenadol.model.dao.UsersDAO;
-import com.github.Frenadol.model.entity.Character_portal;
-import com.github.Frenadol.model.entity.Characters;
-import com.github.Frenadol.model.entity.Session;
-import com.github.Frenadol.model.entity.Users;
-import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Stage;
+    import com.github.Frenadol.App;
+    import com.github.Frenadol.model.dao.Character_portalDAO;
+    import com.github.Frenadol.model.dao.CharactersDAO;
+    import com.github.Frenadol.model.dao.UsersDAO;
+    import com.github.Frenadol.model.entity.Character_portal;
+    import com.github.Frenadol.model.entity.Characters;
+    import com.github.Frenadol.model.entity.Session;
+    import com.github.Frenadol.model.entity.Users;
+    import javafx.beans.property.SimpleStringProperty;
+    import javafx.collections.FXCollections;
+    import javafx.collections.ObservableList;
+    import javafx.fxml.FXML;
+    import javafx.fxml.FXMLLoader;
+    import javafx.fxml.Initializable;
+    import javafx.scene.Parent;
+    import javafx.scene.Scene;
+    import javafx.scene.control.Alert;
+    import javafx.scene.control.Alert.AlertType;
+    import javafx.scene.control.TableColumn;
+    import javafx.scene.control.TableView;
+    import javafx.stage.Stage;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+    import java.io.IOException;
+    import java.net.URL;
+    import java.util.ArrayList;
+    import java.util.List;
+    import java.util.Random;
+    import java.util.ResourceBundle;
 
-public class SummonsMenuController {
-    @FXML
-    private TableView<Characters> tableView;
+    import static com.github.Frenadol.model.dao.Character_portalDAO.build;
 
-    @FXML
-    private TableColumn<Characters, String> nameColumn;
+    public class SummonsMenuController implements Initializable {
+        @FXML
+        private TableView<Character_portal> character_PortalTableView;
 
-    @FXML
-    private void summonButtonClicked() {
-        Users user = Session.getInstance().getUserLogged();
-        UsersDAO usersDAO = new UsersDAO();
-        int stonesRemaining = user.getDragon_stones() - 50;
-        user.setDragon_stones(stonesRemaining);
-        usersDAO.save(user);
+        @FXML
+        private TableColumn<Character_portal, String> nameColumn;
+        private final static int CHARACTERS = 5;
+        private ObservableList<Character_portal> observableList;
+        @FXML
+        public void initialize(URL location, ResourceBundle resources){
+            List<Character_portal> charactersPortals=Character_portalDAO.build().findAll();
+            this.observableList = FXCollections.observableArrayList(charactersPortals);
+            character_PortalTableView.setItems(observableList);
+            nameColumn.setCellValueFactory(Character_portal -> new SimpleStringProperty(Character_portal.getValue().getName_portal()));
 
-        Character_portal character_portal = new Character_portal();
-        character_portal.setId_portal(2);
-        Character_portal portal = Character_portalDAO.build().findById(character_portal);
-        System.out.println(portal);
+        }
 
-        if (portal != null) {
-            Character_portalDAO characterPortalDAO = Character_portalDAO.build();
-            characterPortalDAO.findAllLocated(portal);
+        @FXML
+        private void summonButtonClicked() {
+            Users user = Session.getInstance().getUserLogged();
+            UsersDAO usersDAO = new UsersDAO();
+            final int SUMMON_COST = 50;
+            int stonesRemaining = user.getDragon_stones() - SUMMON_COST;
+            if (stonesRemaining < 0) {
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText(null);
+                alert.setContentText("No tienes suficientes piedras para realizar esta invocación.");
+                alert.showAndWait();
+                return;
+            }
+            user.setDragon_stones(stonesRemaining);
+            usersDAO.updateUser(user);
 
-            List<Characters> characters = portal.getFeatured_characters();
-            List<Characters> summonedCharacters = new ArrayList<>();
-            if (characters != null && !characters.isEmpty()) {
-                for (int i = 0; i < 10; i++) {
-                    int randomIndex = generateRandomCharacterId(0, characters.size() - 1);
-                    Characters character = characters.get(randomIndex);
-                    if (character != null) {
-                        if (!user.getCharacters_list().contains(character)) {
-                            summonedCharacters.add(character);
-                            user.getCharacters_list().add(character);
-                        } else {
-                            user.setDragon_stones(user.getDragon_stones() + 5);
-                            System.out.println("¡Has obtenido un personaje repetido! Se han añadido 5 piedras a tu cuenta.");
-                        }
-                    }
+            Character_portal characterPortal = new Character_portal();
+            characterPortal.setId_portal(2);
+            Character_portal portal = build().findById(characterPortal);
+
+            if (portal != null) {
+                int idUser = user.getId_user();
+                int idCharacter = generateRandomIndex();
+                if (Character_portalDAO.build().findCharacter(idUser, idCharacter) != 0) {
+                    showStonesCompensationAlert();
+                    return;
                 }
+            } else {
+                System.out.println("No se encontró el portal con id_portal igual a 2.");
             }
 
-            usersDAO.save(user);
+            summonCharacters(portal, user, usersDAO);
+        }
+
+
+        private void summonCharacters(Character_portal portal, Users user, UsersDAO usersDAO) {
+            List<Characters> summonedCharacters = new ArrayList<>();
+            int randomIndex = generateRandomIndex();
+            Characters character = build().findAllLocated(randomIndex);
+            if (character != null && !user.getCharacters_list().contains(character)) {
+                summonedCharacters.add(character);
+                user.getCharacters_list().add(character);
+
+                usersDAO.insertObtainedCharacters(user.getId_user(),character.getId_character());
+                System.out.println(character.getName());
+                System.out.println(user.getCharacters_list());
+            } else {
+                showStonesCompensationAlert();
+                return;
+            }
+
 
             showSummonedCharactersDialog(summonedCharacters);
-        } else {
-            System.out.println("No se encontró el portal con id_portal igual a 2.");
+        }
+
+        private void showStonesCompensationAlert() {
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Compensación por error");
+            alert.setHeaderText(null);
+            alert.setContentText("Se han añadido 5 piedras a tu cuenta como compensación por el error.");
+
+            alert.showAndWait();
+        }
+
+        private void showSummonedCharactersDialog(List<Characters> summonedCharacters) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("SummonedCharacters.fxml"));
+                Parent root = loader.load();
+                SummonedCharactersController controller = loader.getController();
+                controller.setSummonedCharacters(summonedCharacters);
+
+                Stage stage = new Stage();
+                stage.setScene(new Scene(root));
+                stage.setTitle("Personajes invocados");
+                stage.showAndWait();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        @FXML
+        public void goToMainMenu() throws IOException {
+            App.setRoot("mainMenu");
+        }
+
+
+
+        private Random random = new Random();
+
+        private int generateRandomIndex() {
+            return random.nextInt(CHARACTERS) + 1;
         }
     }
-
-
-    private void showSummonedCharactersDialog(List<Characters> summonedCharacters) {
-        Alert alert = new Alert(AlertType.INFORMATION);
-        alert.setTitle("Personajes invocados");
-        alert.setHeaderText("¡Has invocado nuevos personajes!");
-
-        // Configurar la tabla en la ventana emergente
-        TableView<Characters> dialogTableView = new TableView<>();
-        TableColumn<Characters, String> dialogNameColumn = new TableColumn<>("Nombre");
-        dialogNameColumn.setCellValueFactory(new PropertyValueFactory<>("name")); // Usar "name" en lugar de "Name"
-        dialogTableView.getColumns().add(dialogNameColumn);
-        TableColumn<Characters, String> dialogVisualColumn = new TableColumn<>("Visual");
-        dialogVisualColumn.setCellValueFactory(new PropertyValueFactory<>("visual")); // Usar "visual" en lugar de "Visual"
-        dialogTableView.getColumns().add(dialogVisualColumn);
-
-        dialogTableView.getItems().addAll(summonedCharacters);
-
-        alert.getDialogPane().setContent(dialogTableView);
-
-        alert.showAndWait();
-    }
-
-    public int generateRandomCharacterId(int minId, int maxId) {
-        Random random = new Random();
-        return random.nextInt((maxId - minId) + 1) + minId;
-    }
-}

@@ -40,13 +40,6 @@ public class RegisterUserController {
             return;
         }
 
-        Characters initialCharacter = new Characters();
-        initialCharacter.setId_character(99);
-        Characters defaultCharacter = charactersDAO.findById(initialCharacter);
-        if (defaultCharacter == null) {
-            showAlert("Error al registrar el usuario. El personaje predeterminado no se encontró.");
-            return;
-        }
 
         Users newUser = new Users();
         newUser.setName_user(username);
@@ -58,7 +51,6 @@ public class RegisterUserController {
         usersDAO.insertUser(newUser);
 
 
-        usersDAO.insertObtainedCharacters(newUser);
 
         showAlert("Usuario registrado con éxito!");
     }

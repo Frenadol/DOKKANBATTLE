@@ -14,6 +14,8 @@ public class CharactersDAO implements DAO<Characters,String> {
 
     private final static String FIND_BY_NAME = "SELECT * FROM characters where Name=?";
     private final static String FIND_BY_ID_CHARACTER = "SELECT * FROM characters where Id_character=?";
+
+    private final static String FIND_IDS = "SELECT * FROM characters where Id_character=?";
     private final static String FIND_BY_CATEGORY = "SELECT * FROM characters where Categories=?";
     private final static String FINDALL = "SELECT * FROM characters";
     private static final String DELETE = "DELETE FROM characters WHERE Id_character=?";
@@ -76,7 +78,7 @@ public class CharactersDAO implements DAO<Characters,String> {
                 result = new Characters();
                 result.setId_character(res.getInt("Id_character"));
                 result.setType(res.getString("Type"));
-              result.setCharacter_class("Character_class");
+                result.setCharacter_class("Character_class");
                 result.setName(res.getString("Name"));
                 result.setCategories(res.getString("Categories"));
                 result.setSuperAttack(res.getString("SuperAttack"));
@@ -89,6 +91,33 @@ public class CharactersDAO implements DAO<Characters,String> {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return result;
+    }
+    public Characters findIDS(int id){
+        Characters result=null;
+        try (PreparedStatement pst=ConnectionMariaDB.getConnection().prepareStatement(FIND_IDS)){
+    pst.setInt(1,id);
+    try(ResultSet res= pst.executeQuery()){
+        if(res.next()){
+            Characters c = new Characters();
+            c.setId_character(res.getInt("Id_character"));
+            c.setType(res.getString("Type"));
+            c.setCharacter_class(res.getString("Class"));
+            c.setName(res.getString("Name"));
+            c.setCategories(res.getString("Categories"));
+            c.setSuperAttack(res.getString("SuperAttack"));
+            c.setUltraSuperAttack(res.getString("UltraSuperAttack"));
+            c.setRarety(res.getString("Rarety"));
+            c.setPassive(res.getString("Passive"));
+            c.setVisual(res.getBytes("Visual"));
+            result = c;
+        }
+    }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
         return result;
     }
     @Override
