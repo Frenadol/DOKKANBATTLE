@@ -1,5 +1,7 @@
 package com.github.Frenadol.model.entity;
 
+import com.github.Frenadol.model.dao.Character_portalDAO;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;

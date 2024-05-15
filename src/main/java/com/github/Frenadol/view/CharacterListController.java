@@ -76,18 +76,13 @@ public class CharacterListController extends Controller implements Initializable
         visualColumn.setCellValueFactory(characters -> {
             byte[] visualData = characters.getValue().getVisual();
             if (visualData != null) {
-                // Convertir los bytes a una imagen de JavaFX
                 ByteArrayInputStream bis = new ByteArrayInputStream(visualData);
                 Image image = new Image(bis);
 
-                // Crear un ImageView para mostrar la imagen
                 ImageView imageView = new ImageView(image);
-                imageView.setFitWidth(200);  // Ajustar el ancho
-                imageView.setFitHeight(200); // Ajustar la altura
-
-                // Agregar un evento de clic al ImageView
+                imageView.setFitWidth(200);
+                imageView.setFitHeight(200);
                 imageView.setOnMouseClicked(event -> {
-                    // Crear una nueva ventana para mostrar la imagen
                     Stage stage = new Stage();
                     ImageView imageViewFull = new ImageView(image);
                     StackPane layout = new StackPane(imageViewFull);
@@ -96,7 +91,6 @@ public class CharacterListController extends Controller implements Initializable
                     stage.show();
                 });
 
-                // Devolver el ImageView como el valor de la celda
                 return new SimpleObjectProperty<>(imageView);
             } else {
                 System.out.println("visualData es null");

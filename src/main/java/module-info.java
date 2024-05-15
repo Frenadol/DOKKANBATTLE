@@ -7,9 +7,11 @@ requires java.sql;
     requires java.desktop;
     requires javafx.web;
     opens com.github.Frenadol to javafx.fxml;
+    opens com.github.Frenadol.model.entity to javafx.base;
 
 
-exports  com.github.Frenadol;
+
+    exports  com.github.Frenadol;
 exports com.github.Frenadol.utils;
 opens  com.github.Frenadol.utils to javafx.fxml;
 opens  com.github.Frenadol.model.connection;

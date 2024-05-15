@@ -9,7 +9,7 @@
 
 <AnchorPane fx:id="anchorPane" prefHeight="543.0" prefWidth="769.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.Frenadol.view.SummonsMenuController">
    <children>
-      <TableView fx:id="tableView" layoutX="167.0" layoutY="23.0" prefHeight="120.0" prefWidth="514.0">
+      <TableView fx:id="character_PortalTableView" layoutX="167.0" layoutY="23.0" prefHeight="120.0" prefWidth="514.0">
         <columns>
           <TableColumn fx:id="nameColumn" prefWidth="513.5999969482422" text="BannerName" />
         </columns>
@@ -20,5 +20,6 @@
          </image>
       </ImageView>
       <Button layoutX="382.0" layoutY="394.0" mnemonicParsing="false" onAction="#summonButtonClicked" text="Summon(50)" />
+      <Button layoutX="656.0" layoutY="445.0" mnemonicParsing="false" onMouseClicked="#goToMainMenu" text="Menu anterior" />
    </children>
 </AnchorPane>

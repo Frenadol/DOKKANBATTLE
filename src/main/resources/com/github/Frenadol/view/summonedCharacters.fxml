@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="528.0" prefWidth="742.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.Frenadol.view.SummonedCharactersController">
+   <children>
+      <TableView fx:id="summonedCharactersTableView" layoutX="154.0" layoutY="63.0" prefHeight="354.0" prefWidth="448.0">
+        <columns>
+          <TableColumn fx:id="nameColumn" prefWidth="175.2000274658203" text="Name" />
+          <TableColumn fx:id="visualColumn" prefWidth="271.20001220703125" text="Visual" />
+        </columns>
+      </TableView>
+   </children>
+</AnchorPane>
