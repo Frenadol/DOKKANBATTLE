@@ -14,11 +14,12 @@ import java.util.stream.Collectors;
 public class UsersDAO implements DAO<Users, String> {
     private static final String FINDBY_ID_USER = "SELECT * FROM users WHERE Id_user=?";
     private static final String INSERT = "INSERT INTO users (Name_user,Password,Dragon_stones,Admin) VALUES (?,?,?,?)";
-    private static final String UPDATE = "UPDATE users SET Dragon_stones=? WHERE Dragon_stones=?";
+    private static final String UPDATE = "UPDATE users SET Name_user=?, Password=?, Dragon_stones=?, Admin=? WHERE Id_user=?";
     private static final String DELETE = "DELETE FROM users WHERE Id_user=?";
     private static final String FIND_BY_NAME = "SELECT * FROM users WHERE Name_user=?";
     private static final String INSERT_OBTAINED = "INSERT INTO obtained (Id_user, Id_character) VALUES (?, ?)";
     private static final String DELETE_OBTAINED = "DELETE FROM obtained WHERE Id_character = ?";
+    private static final String FIND_ALL_OBTAINED = "SELECT c.* FROM characters c, obtained o WHERE c.Id_character = o.Id_character AND o.Id_user = ? GROUP BY c.Id_character";
 
     private Connection conn;
 
@@ -50,12 +51,11 @@ public class UsersDAO implements DAO<Users, String> {
             pst.setString(1, entity.getName_user());
             pst.setString(2, entity.getPassword());
             pst.setInt(3, entity.getDragon_stones());
-            if (entity.isAdmin() == true) {
+            if (entity.isAdmin()) {
                 pst.setInt(4, 1);
             } else {
                 pst.setInt(4, 0);
             }
-            pst.setBoolean(4, entity.isAdmin());
             pst.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -65,12 +65,11 @@ public class UsersDAO implements DAO<Users, String> {
 
 
 
-    public void insertObtainedCharacters(int userKey, int cKey) {
-        if (userKey != 0 && cKey!=0) {
-             // Verifica si Id_character no es nulo
+    public void insertObtainedCharacters(int userKey, int characterKey) {
+        if (userKey != 0 && characterKey!=0) {
                 try (PreparedStatement pst = conn.prepareStatement(INSERT_OBTAINED)) {
                     pst.setInt(1, userKey);
-                    pst.setInt(2, cKey);
+                    pst.setInt(2, characterKey);
                     pst.executeUpdate();
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -86,15 +85,11 @@ public class UsersDAO implements DAO<Users, String> {
 
     public void updateUser(Users entity) {
         try (PreparedStatement pst = conn.prepareStatement(UPDATE)) {
-            pst.setString(1, entity.getName_user()); // Cambiado el índice del parámetro
+            pst.setString(1, entity.getName_user());
             pst.setString(2, entity.getPassword());
             pst.setInt(3, entity.getDragon_stones());
-            if (entity.isAdmin()) {
-                pst.setInt(4, 1);
-            } else {
-                pst.setInt(4, 0);
-            }
-            pst.setInt(5, entity.getId_user()); // Cambiado el índice del parámetro
+            pst.setBoolean(4, entity.isAdmin());
+            pst.setInt(5, entity.getId_user());
             pst.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -110,6 +105,30 @@ public class UsersDAO implements DAO<Users, String> {
             e.printStackTrace();
         }
 
+    }
+    public List<Characters> findAllCharacterFromObtained(Users users){
+        List<Characters> result = new ArrayList<>();
+        try (PreparedStatement pst = conn.prepareStatement(FIND_ALL_OBTAINED)) {
+            pst.setInt(1, users.getId_user());
+            ResultSet res = pst.executeQuery();
+            while (res.next()) {
+                Characters character = new Characters();
+                character.setId_character(res.getInt("Id_character"));
+                character.setType(res.getString("Type"));
+                character.setCharacter_class(res.getString("Class"));
+                character.setName(res.getString("Name"));
+                character.setCategories(res.getString("Categories"));
+                character.setSuperAttack(res.getString("SuperAttack"));
+                character.setUltraSuperAttack(res.getString("UltraSuperAttack"));
+                character.setRarety(res.getString("Rarety"));
+                character.setPassive(res.getString("Passive"));
+                character.setVisual(res.getBytes("Visual"));
+                result.add(character);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
 
@@ -148,6 +167,7 @@ public class UsersDAO implements DAO<Users, String> {
                 result.setName_user(res.getString("Name_user"));
                 result.setPassword(res.getString("Password"));
                 result.setDragon_stones(res.getInt("Dragon_stones"));
+                result.setAdmin(res.getBoolean("Admin"));
             }
             res.close();
         } catch (SQLException e) {

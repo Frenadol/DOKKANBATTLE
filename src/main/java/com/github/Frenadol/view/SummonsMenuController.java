@@ -13,7 +13,6 @@
     import javafx.collections.ObservableList;
     import javafx.fxml.FXML;
     import javafx.fxml.FXMLLoader;
-    import javafx.fxml.Initializable;
     import javafx.scene.Parent;
     import javafx.scene.Scene;
     import javafx.scene.control.Alert;
@@ -21,7 +20,6 @@
     import javafx.scene.control.TableColumn;
     import javafx.scene.control.TableView;
     import javafx.stage.Stage;
-
     import java.io.IOException;
     import java.net.URL;
     import java.util.ArrayList;
@@ -31,7 +29,7 @@
 
     import static com.github.Frenadol.model.dao.Character_portalDAO.build;
 
-    public class SummonsMenuController implements Initializable {
+    public class SummonsMenuController {
         @FXML
         private TableView<Character_portal> character_PortalTableView;
 
@@ -63,8 +61,6 @@
                 return;
             }
             user.setDragon_stones(stonesRemaining);
-            usersDAO.updateUser(user);
-
             Character_portal characterPortal = new Character_portal();
             characterPortal.setId_portal(2);
             Character_portal portal = build().findById(characterPortal);
@@ -80,25 +76,23 @@
                 System.out.println("No se encontró el portal con id_portal igual a 2.");
             }
 
-            summonCharacters(portal, user, usersDAO);
+            summonCharacters(user, usersDAO);
         }
 
 
-        private void summonCharacters(Character_portal portal, Users user, UsersDAO usersDAO) {
+        private void summonCharacters( Users user, UsersDAO usersDAO) {
             List<Characters> summonedCharacters = new ArrayList<>();
             int randomIndex = generateRandomIndex();
             Characters character = build().findAllLocated(randomIndex);
             if (character != null && !user.getCharacters_list().contains(character)) {
                 summonedCharacters.add(character);
                 user.getCharacters_list().add(character);
-
                 usersDAO.insertObtainedCharacters(user.getId_user(),character.getId_character());
-                System.out.println(character.getName());
-                System.out.println(user.getCharacters_list());
             } else {
                 showStonesCompensationAlert();
                 return;
             }
+            usersDAO.updateUser(user);
 
 
             showSummonedCharactersDialog(summonedCharacters);
@@ -128,6 +122,8 @@
                 e.printStackTrace();
             }
         }
+
+
         @FXML
         public void goToMainMenu() throws IOException {
             App.setRoot("mainMenu");
@@ -139,5 +135,7 @@
 
         private int generateRandomIndex() {
             return random.nextInt(CHARACTERS) + 1;
+        }
+        @FXML private void onClose(){
         }
     }

@@ -93,6 +93,12 @@ public class CharactersDAO implements DAO<Characters,String> {
         }
         return result;
     }
+
+    /**
+     *
+     * @
+     * @
+
     public Characters findIDS(int id){
         Characters result=null;
         try (PreparedStatement pst=ConnectionMariaDB.getConnection().prepareStatement(FIND_IDS)){
@@ -120,6 +126,7 @@ public class CharactersDAO implements DAO<Characters,String> {
 
         return result;
     }
+     */
     @Override
     public Characters findById(Characters id) {
         Characters result=null;
@@ -146,7 +153,13 @@ public class CharactersDAO implements DAO<Characters,String> {
         }
         return result;
     }
-public Characters findRandomId(int id){
+
+    /**
+     *
+     * @param
+     * @return
+
+    public Characters findRandomId(int id){
     Characters result=null;
     try (PreparedStatement pst = ConnectionMariaDB.getConnection().prepareStatement(FIND_BY_ID_CHARACTER)) {
         pst.setInt(1, id);
@@ -171,6 +184,7 @@ public Characters findRandomId(int id){
     }
     return result;
 }
+     */
 
     @Override
     public List<Characters> findAll() {

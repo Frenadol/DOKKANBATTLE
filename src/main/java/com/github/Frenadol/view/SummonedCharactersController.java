@@ -1,6 +1,8 @@
 package com.github.Frenadol.view;
 
 import com.github.Frenadol.model.entity.Characters;
+import com.github.Frenadol.model.entity.Session;
+import com.github.Frenadol.model.entity.Users;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -66,5 +68,8 @@ public class SummonedCharactersController implements Initializable {
 
     public void setSummonedCharacters(List<Characters> summonedCharacters) {
         observableList.addAll(summonedCharacters);
+    }
+    @FXML private void onClose(){
+
     }
 }

@@ -1,4 +1,5 @@
 package com.github.Frenadol.view;
+import com.github.Frenadol.model.dao.UsersDAO;
 import javafx.fxml.Initializable;
 
 import com.github.Frenadol.App;
@@ -86,4 +87,14 @@ public class MainMenuController implements Initializable {
             showAlert("Error", "No se ha iniciado sesión.");
         }
     }
-}
+    @FXML
+    private void onClose(){
+        Users user = Session.getInstance().getUserLogged();
+
+            UsersDAO usersDAO = new UsersDAO();
+            usersDAO.updateUser(user);
+        Stage stage = (Stage) mediaView.getScene().getWindow();
+        stage.close();
+        }
+    }
+
