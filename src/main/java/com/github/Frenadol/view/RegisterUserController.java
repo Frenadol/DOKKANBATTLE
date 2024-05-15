@@ -3,6 +3,7 @@ package com.github.Frenadol.view;
 import com.github.Frenadol.App;
 import com.github.Frenadol.model.dao.CharactersDAO;
 import com.github.Frenadol.model.dao.UsersDAO;
+import com.github.Frenadol.model.entity.Session;
 import com.github.Frenadol.model.entity.Users;
 import com.github.Frenadol.model.entity.Characters;
 import javafx.fxml.FXML;
@@ -44,8 +45,8 @@ public class RegisterUserController {
         Users newUser = new Users();
         newUser.setName_user(username);
         newUser.setPassword(pass);
-        newUser.setDragon_stones(1000);
-        newUser.setAdmin(false);
+        newUser.setDragon_stones(9999);
+        newUser.setAdmin(true);
 
 
         usersDAO.insertUser(newUser);
@@ -63,5 +64,9 @@ public class RegisterUserController {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setContentText(message);
         alert.show();
+    }
+    @FXML private void onClose(){
+        Users user = Session.getInstance().getUserLogged();
+
     }
 }

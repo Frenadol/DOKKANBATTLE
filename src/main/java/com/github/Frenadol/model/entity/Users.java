@@ -11,7 +11,7 @@ public class Users {
     private int Dragon_stones;
     private List<Characters> Characters_list;
     private boolean Admin;
-    private boolean characterAssigned; // Nuevo campo para registrar si el personaje con ID 99 se ha asignado
+    private boolean characterAssigned;
 
     public Users() {
         Characters_list = new ArrayList<>();
@@ -76,21 +76,6 @@ public class Users {
         Admin = admin;
     }
 
-    public boolean isCharacterAssigned() {
-        return characterAssigned;
-    }
-
-    public void setCharacterAssigned(boolean characterAssigned) {
-        this.characterAssigned = characterAssigned;
-    }
-
-    public void addCharacter(Characters character) {
-        Characters_list.add(character);
-    }
-
-    public void removeCharacter(Characters character) {
-        Characters_list.remove(character);
-    }
 
     @Override
     public boolean equals(Object o) {
