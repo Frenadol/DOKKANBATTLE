@@ -1,0 +1,29 @@
+/* Estilos para los paneles izquierdo y derecho */
+.left-pane, .right-pane {
+    -fx-background-color: orange;
+    -fx-pref-width: 50%; /* Dividir la pantalla en dos columnas en pantallas grandes */
+}
+
+/* Estilos para pantallas pequeñas */
+@media only screen and (max-width: 600px) {
+    .left-pane, .right-pane {
+        -fx-pref-width: 100%; /* Ocupar todo el ancho en pantallas pequeñas */
+    }
+}
+
+/* Estilos para los botones */
+.button {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 10px 20px;
+    -fx-min-width: 120px; /* Ancho mínimo para los botones en pantallas grandes */
+}
+
+/* Estilos para pantallas pequeñas */
+@media only screen and (max-width: 600px) {
+    .button {
+        -fx-min-width: 90px; /* Reducir el ancho mínimo de los botones en pantallas pequeñas */
+    }
+}
