@@ -1,24 +1,23 @@
 package com.github.Frenadol.view;
 
+import com.github.Frenadol.App;
 import com.github.Frenadol.model.dao.CharactersDAO;
 import com.github.Frenadol.model.entity.Characters;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.io.*;
 
 public class AdminMenuController {
     @FXML
-    private Integer idField;
+    private TextField idField;
 
     @FXML
     private TextField typeField;
@@ -37,7 +36,11 @@ public class AdminMenuController {
     @FXML
     private TextField raretyField;
     @FXML
-    private TextField passiveField;
+    private TextArea passiveField;
+    @FXML
+    private Button loadImageButton;
+    @FXML
+    private Button saveCharacterButton;
 
     private File imageFile;
 
@@ -54,16 +57,24 @@ public class AdminMenuController {
             try {
                 InputStream is = new FileInputStream(imageFile);
                 Image image = new Image(is);
-                imageView.setImage(image);
+                imageView.setImage(image); // Mostrar la imagen en el ImageView
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
         }
     }
+
     @FXML
     private void saveCharacter() {
         String name = nameField.getText();
-        // Obtener otros atributos del formulario y validarlos si es necesario
+        String id = idField.getText();
+        String type = typeField.getText();
+        String characterClass = characterClassField.getText();
+        String categories = categoriesField.getText();
+        String superAttack = superAttackField.getText();
+        String ultraSuperAttack = ultraSuperAttackField.getText();
+        String rarety = raretyField.getText();
+        String passive = passiveField.getText();
 
         if (name.isEmpty() || imageFile == null) {
             showAlert("Por favor, complete todos los campos y seleccione una imagen.");
@@ -76,16 +87,27 @@ public class AdminMenuController {
             fis.read(imageData);
             fis.close();
 
-            int id = idField != null ? idField.intValue() : 0; // Obtener el valor entero del campo idField
+            try {
+                id = String.valueOf(Integer.parseInt(idField.getText()));
+            } catch (NumberFormatException ex) {
+                showAlert("El ID debe ser un número entero.");
+                return;
+            }
 
             Characters character = new Characters();
-            character.setId_character(id);
+            character.setId_character(Integer.parseInt(id));
+            character.setType(type);
+            character.setCharacter_class(characterClass);
             character.setName(name);
+            character.setCategories(categories);
+            character.setSuperAttack(superAttack);
+            character.setUltraSuperAttack(ultraSuperAttack);
+            character.setRarety(rarety);
+            character.setPassive(passive);
             character.setVisual(imageData);
 
             CharactersDAO charactersDAO = new CharactersDAO();
 
-            // Verificar si el ID ya existe en la base de datos
             if (charactersDAO.findById(character) != null) {
                 showAlert("El ID del personaje ya existe. Por favor, elija un ID único.");
                 return;
@@ -105,4 +127,10 @@ public class AdminMenuController {
         alert.setContentText(message);
         alert.show();
     }
+
+    @FXML
+    public void goToCharacterRepo() throws IOException {
+        App.setRoot("charactersRepo");
+    }
+
 }

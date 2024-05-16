@@ -1,6 +1,7 @@
 package com.github.Frenadol.view;
 
 import com.github.Frenadol.App;
+import com.github.Frenadol.model.dao.CharactersDAO;
 import com.github.Frenadol.model.dao.UsersDAO;
 import com.github.Frenadol.model.entity.Session;
 import com.github.Frenadol.model.entity.Users;
@@ -27,7 +28,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class CharacterListController extends Controller implements Initializable {
+public class CharactersRepoController extends Controller implements Initializable {
     @FXML
     private TableView<Characters> TableView;
     @FXML
@@ -50,6 +51,8 @@ public class CharacterListController extends Controller implements Initializable
     private TableColumn<Characters, String> passiveColumn;
     @FXML
     private TableColumn<Characters, ImageView> visualColumn;
+    @FXML
+    private Button backToAdminMenuButton;
 
     private ObservableList<Characters> observableList;
 
@@ -66,8 +69,7 @@ public class CharacterListController extends Controller implements Initializable
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         if (TableView.getItems().isEmpty()) {
-            Users user = Session.getInstance().getUserLogged();
-            List<Characters> charactersList = UsersDAO.build().findAllCharacterFromObtained(user);
+            List<Characters> charactersList = CharactersDAO.build().findAll();
             this.observableList = FXCollections.observableArrayList(charactersList);
             TableView.setItems(observableList);
             id_CharacterColumn.setCellValueFactory(characters -> new SimpleIntegerProperty(characters.getValue().getId_character()).asObject());
@@ -104,11 +106,9 @@ public class CharacterListController extends Controller implements Initializable
                 }
             });
         }
-
     }
     @FXML
-    public void goToMainMenu() throws IOException {
-        App.setRoot("mainMenu");
+    private void backToAdminMenu() throws IOException {
+        App.setRoot("adminMenu");
     }
-
 }
