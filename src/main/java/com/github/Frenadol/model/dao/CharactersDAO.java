@@ -10,10 +10,10 @@ import java.util.List;
 
 public class CharactersDAO implements DAO<Characters,String> {
     private final static String INSERT = "INSERT INTO characters (Id_character,Type,Class,Name,Categories,SuperAttack,UltraSuperAttack,Rarety,Passive,Visual) VALUES (?,?,?,?,?,?,?,?,?,?)";
-    private final static String UPDATE = "UPDATE characters SET Name=? WHERE Id_character=?";
-
+    private final static String UPDATE = "UPDATE characters SET Name=?, Passive=? WHERE Id_character=?";
     private final static String FIND_BY_NAME = "SELECT * FROM characters where Name=?";
     private final static String FIND_BY_ID_CHARACTER = "SELECT * FROM characters where Id_character=?";
+    private final static String FIND_BY_PASSIVE = "SELECT * FROM characters where Passive=?";
 
     private final static String FIND_IDS = "SELECT * FROM characters where Id_character=?";
     private final static String FIND_BY_CATEGORY = "SELECT * FROM characters where Categories=?";
@@ -51,15 +51,9 @@ public class CharactersDAO implements DAO<Characters,String> {
         } else {
             //UPDATE
             try (PreparedStatement pst = ConnectionMariaDB.getConnection().prepareStatement(UPDATE)) {
-                pst.setInt(1, entity.getId_character());
-                pst.setString(2, entity.getType());
-                pst.setString(3, entity.getCharacter_class());
-                pst.setString(4, entity.getName());
-                pst.setString(5, entity.getCategories());
-                pst.setString(6, entity.getSuperAttack());
-                pst.setString(7, entity.getUltraSuperAttack());
-                pst.setString(8, entity.getRarety());
-                pst.setString(9, entity.getPassive());
+                pst.setString(1, entity.getName());
+                pst.setString(2, entity.getPassive());
+                pst.setInt(3, entity.getId_character());
                 pst.executeUpdate();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -67,7 +61,30 @@ public class CharactersDAO implements DAO<Characters,String> {
         }
         return result;
     }
-
+    public Characters findByPassive(String passive) {
+        Characters result = null;
+        try (PreparedStatement pst = ConnectionMariaDB.getConnection().prepareStatement(FIND_BY_PASSIVE)) {
+            pst.setString(1, passive);
+            ResultSet res = pst.executeQuery();
+            if (res.next()) {
+                result = new Characters();
+                result.setId_character(res.getInt("Id_character"));
+                result.setType(res.getString("Type"));
+                result.setCharacter_class("Character_class");
+                result.setName(res.getString("Name"));
+                result.setCategories(res.getString("Categories"));
+                result.setSuperAttack(res.getString("SuperAttack"));
+                result.setUltraSuperAttack(res.getString("UltraSuperAttack"));
+                result.setRarety(res.getString("Rarety"));
+                result.setPassive(res.getString("Passive"));
+                result.setVisual(res.getBytes("Visual"));
+            }
+            res.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
     @Override
     public Characters findByName(String name) {
         Characters result = null;

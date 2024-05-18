@@ -22,5 +22,6 @@
             </columns>
         </TableView>
         <Button fx:id="backButton" layoutX="208.0" layoutY="27.0" mnemonicParsing="false" onMouseClicked="#goToMainMenu" text="Volver al menú anterior" />
+      <Button layoutX="455.0" layoutY="40.0" mnemonicParsing="false" onMouseClicked="#sellCharacter" text="Vender Personaje" />
     </children>
 </AnchorPane>

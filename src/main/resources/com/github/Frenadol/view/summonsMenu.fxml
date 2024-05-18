@@ -9,17 +9,17 @@
 
 <AnchorPane fx:id="anchorPane" prefHeight="543.0" prefWidth="769.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.Frenadol.view.SummonsMenuController">
    <children>
-      <TableView fx:id="character_PortalTableView" layoutX="167.0" layoutY="23.0" prefHeight="120.0" prefWidth="514.0">
-        <columns>
-          <TableColumn fx:id="nameColumn" prefWidth="513.5999969482422" text="BannerName" />
-        </columns>
-      </TableView>
-      <ImageView fitHeight="211.0" fitWidth="329.0" layoutX="260.0" layoutY="165.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="211.0" fitWidth="329.0" layoutX="253.0" layoutY="174.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../../MediaContent/GokuBlackBanner.jpeg" />
          </image>
       </ImageView>
-      <Button layoutX="382.0" layoutY="394.0" mnemonicParsing="false" onAction="#summonButtonClicked" text="Summon(50)" />
+      <Button layoutX="376.0" layoutY="402.0" mnemonicParsing="false" onAction="#summonButtonClicked" text="Summon(50)" />
       <Button layoutX="656.0" layoutY="445.0" mnemonicParsing="false" onMouseClicked="#goToMainMenu" text="Menu anterior" />
+      <TableView fx:id="character_PortalTableView" layoutX="300.0" layoutY="14.0" prefHeight="150.0" prefWidth="236.0">
+        <columns>
+          <TableColumn fx:id="nameColumn" prefWidth="235.20001220703125" text="Nombre del banner" />
+        </columns>
+      </TableView>
    </children>
 </AnchorPane>

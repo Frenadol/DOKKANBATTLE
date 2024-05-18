@@ -20,7 +20,7 @@ public class Test5InsertAddCharacterIntoPortal {
         characters_list.add(CharacterTest);
         charactersPortals.setFeatured_characters(characters_list);
         Character_portalDAO CDAO = new Character_portalDAO();
-        CDAO.insertIntoLocated(charactersPortals);
+       // CDAO.insertIntoLocated(charactersPortals);
         CDAO.updateCharacterPortal(charactersPortals);
     }
 }

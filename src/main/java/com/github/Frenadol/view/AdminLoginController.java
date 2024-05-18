@@ -30,7 +30,7 @@ public class AdminLoginController {
         if (userLogin != null) {
             if (pass.equals(userLogin.getPassword()) && username.equals(userLogin.getName_user()) && userLogin.isAdmin()) {
                 Session.getInstance().logIn(userLogin);
-                App.setRoot("adminMenu");
+                App.setRoot("adminPanel");
             } else {
                 Alert alert = new Alert(AlertType.ERROR);
                 alert.setContentText("Credenciales incorrectas para el acceso de administrador. Introduzca las credenciales correctas.");

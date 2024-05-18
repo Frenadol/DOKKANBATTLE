@@ -66,7 +66,7 @@ public class RegisterUserController {
         alert.show();
     }
     @FXML private void onClose(){
-        Users user = Session.getInstance().getUserLogged();
+
 
     }
 }

@@ -39,11 +39,9 @@ public class Character_portalDAO implements DAO<Character_portal, String> {
         try {
             if (findById(entity) == null) {
                 insertCharacterPortal(entity);
-                insertIntoLocated(entity);
             } else {
                 updateCharacterPortal(entity);
                 deleteLocated(entity);
-                insertIntoLocated(entity);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -78,16 +76,20 @@ public int findCharacter(int idUser,int idCharacter){
         }
     }
 
-    public void insertIntoLocated(Character_portal entity) {
+    public void insertIntoLocated(Character_portal entity, int idCharacter) {
+        CharactersDAO charactersDAO = new CharactersDAO();
         List<Characters> characters = entity.getFeatured_characters();
         if (characters != null) {
             for (Characters character : characters) {
-                try (PreparedStatement pst = conn.prepareStatement(INSERT_LOCATED)) {
-                    pst.setInt(1, character.getId_character());
-                    pst.setInt(2, entity.getId_portal());
-                    pst.executeUpdate();
-                } catch (SQLException e) {
-                    e.printStackTrace();
+                Characters existingCharacter = charactersDAO.findById(character);
+                if (existingCharacter != null) {
+                    try (PreparedStatement pst = conn.prepareStatement(INSERT_LOCATED)) {
+                        pst.setInt(1, character.getId_character());
+                        pst.setInt(2, entity.getId_portal());
+                        pst.executeUpdate();
+                    } catch (SQLException e) {
+                        // Handle exception
+                    }
                 }
             }
         }
