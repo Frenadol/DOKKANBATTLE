@@ -1,4 +1,5 @@
 package com.github.Frenadol.view;
+
 import com.github.Frenadol.model.dao.UsersDAO;
 import javafx.fxml.Initializable;
 
@@ -40,28 +41,17 @@ public class MainMenuController implements Initializable {
     @FXML
     private ObservableList<Users> observableList;
 
-    @FXML
-    private void switchToCharacterList() throws Exception {
-        App.setRoot("CharacterList");
-    }
-    @FXML
-    public void goToSummonMenu() throws IOException {
-        App.setRoot("summonsMenu");
-    }
 
     @FXML
     private void playVideo() {
-        // Obtener la ruta del video
         URL videoUrl = getClass().getResource("/MediaContent/BlackRoseVideo.mp4");
         Media media = new Media(videoUrl.toString());
         MediaPlayer mediaPlayer = new MediaPlayer(media);
 
         mediaView.setMediaPlayer(mediaPlayer);
 
-        // Reproducir el video
         mediaPlayer.setAutoPlay(true);
 
-        // Cerrar la ventana cuando el video termina
         mediaPlayer.setOnEndOfMedia(() -> {
             mediaView.setMediaPlayer(null);
         });
@@ -87,14 +77,31 @@ public class MainMenuController implements Initializable {
             showAlert("Error", "No se ha iniciado sesión.");
         }
     }
+
     @FXML
-    private void onClose(){
+    private void onClose() {
         Users user = Session.getInstance().getUserLogged();
 
-            UsersDAO usersDAO = new UsersDAO();
-            usersDAO.updateUser(user);
+        UsersDAO usersDAO = new UsersDAO();
+        usersDAO.updateUser(user);
         Stage stage = (Stage) mediaView.getScene().getWindow();
         stage.close();
-        }
     }
+
+    @FXML
+    private void switchToCharacterList() throws Exception {
+        App.setRoot("CharacterList");
+    }
+
+    @FXML
+    public void goToSummonMenu() throws IOException {
+        App.setRoot("summonsMenu");
+    }
+
+    @FXML
+    private void goToAnimationsGallery() throws IOException {
+        App.setRoot("animationsGallery");
+    }
+}
+
 

@@ -10,38 +10,40 @@
 <?import javafx.scene.text.Text?>
 
 <AnchorPane fx:id="anchorPane" prefHeight="682.0" prefWidth="872.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.Frenadol.view.AdminMenuController">
-   <children>
-      <ScrollPane fitToWidth="true" prefHeight="400.0">
-         <content>
-            <VBox layoutX="25.0" layoutY="27.0" spacing="10">
-               <children>
-                  <Text text="BIENVENIDO AL MENU DE INCLUIR PERSONAJES:" />
-                  <Text text="Porfavor completa con los datos correspondientes" />
-                  <Text text="ID" />
-                  <TextField fx:id="idField" />
-                  <Text text="Tipo" />
-                  <TextField fx:id="typeField" />
-                  <Text text="Clase" />
-                  <TextField fx:id="characterClassField" />
-                  <Text text="Nombre" />
-                  <TextField fx:id="nameField" />
-                  <Text text="Categorias" />
-                  <TextField fx:id="categoriesField" />
-                  <Text text="SuperAtaque" />
-                  <TextField fx:id="superAttackField" />
-                  <Text text="UltraSuperAtaque (si es LR)" />
-                  <TextField fx:id="ultraSuperAttackField" />
-                  <Text text="Rareza" />
-                  <TextField fx:id="raretyField" />
-                  <Text text="Pasiva" />
-                  <TextArea fx:id="passiveField" prefHeight="200.0" prefWidth="200.0" />
-                  <Button fx:id="loadImageButton" onMouseClicked="#loadImage" text="Cargar imagen" />
-                  <ImageView fx:id="imageView" fitHeight="256.0" fitWidth="353.0" />
-                  <Button fx:id="saveCharacterButton" onMouseClicked="#saveCharacter" text="Guardar personaje" />
-               </children>
-            </VBox>
-         </content>
-      </ScrollPane>
-      <Button layoutX="445.0" layoutY="173.0" mnemonicParsing="false" onMouseClicked="#goToCharacterRepo" prefHeight="26.0" prefWidth="108.0" text="Personajes" />
-   </children>
+    <children>
+        <ScrollPane fitToWidth="true" prefHeight="400.0">
+            <content>
+                <VBox layoutX="25.0" layoutY="27.0" spacing="10">
+                    <children>
+                        <Text text="BIENVENIDO AL MENU DE INCLUIR PERSONAJES:" />
+                        <Text text="Por favor completa con los datos correspondientes" />
+                        <Text text="ID" />
+                        <TextField fx:id="idField" />
+                        <Text text="Tipo" />
+                        <TextField fx:id="typeField" />
+                        <Text text="Clase" />
+                        <TextField fx:id="characterClassField" />
+                        <Text text="Nombre" />
+                        <TextField fx:id="nameField" />
+                        <Text text="Categorias" />
+                        <TextField fx:id="categoriesField" />
+                        <Text text="SuperAtaque" />
+                        <TextField fx:id="superAttackField" />
+                        <Text text="UltraSuperAtaque (si es LR)" />
+                        <TextField fx:id="ultraSuperAttackField" />
+                        <Text text="Rareza" />
+                        <TextField fx:id="raretyField" />
+                        <Text text="Pasiva" />
+                        <TextArea fx:id="passiveField" prefHeight="200.0" prefWidth="200.0" />
+                        <Button fx:id="loadImageButton" onAction="#loadImage" text="Cargar imagen" />
+                        <ImageView fx:id="imageView" fitHeight="256.0" fitWidth="353.0" />
+                        <Button fx:id="saveCharacterButton" onAction="#saveCharacter" text="Guardar personaje" />
+                    </children>
+                </VBox>
+            </content>
+        </ScrollPane>
+        <Button layoutX="445.0" layoutY="173.0" mnemonicParsing="false" onAction="#goToCharacterRepo" prefHeight="26.0" prefWidth="108.0" text="Personajes" />
+      <Button layoutX="473.0" layoutY="286.0" mnemonicParsing="false" onMouseClicked="#saveCharacterInPortal" text="GUARDAR E INSERTAR EN PORTAL" />
+      <Button layoutX="455.0" layoutY="341.0" mnemonicParsing="false" onMouseClicked="#goToAdminPanel" text="VOLVER AL PANEL DEL ADMINISTRADOR" />
+    </children>
 </AnchorPane>

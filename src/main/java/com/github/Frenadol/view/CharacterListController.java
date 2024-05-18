@@ -13,18 +13,19 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class CharacterListController extends Controller implements Initializable {
@@ -51,6 +52,8 @@ public class CharacterListController extends Controller implements Initializable
     @FXML
     private TableColumn<Characters, ImageView> visualColumn;
 
+    private int soldCharacterId;
+
     private ObservableList<Characters> observableList;
 
     @Override
@@ -62,12 +65,45 @@ public class CharacterListController extends Controller implements Initializable
     public void onClose(Object output) {
 
     }
+    @FXML
+    public void sellCharacter() {
+        Characters selectedCharacter = TableView.getSelectionModel().getSelectedItem();
+        if (selectedCharacter != null) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmación de venta");
+            alert.setHeaderText("Estás a punto de vender el personaje " + selectedCharacter.getName());
+            alert.setContentText("¿Estás seguro de que quieres vender este personaje?");
+
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK){
+                Users user = Session.getInstance().getUserLogged();
+                user.getCharacters_list().remove(selectedCharacter);
+                soldCharacterId = selectedCharacter.getId_character(); // Almacenar la ID del personaje vendido
+                try {
+                    UsersDAO usersDAO = UsersDAO.build();
+                    usersDAO.deleteObtainedCharacters(Session.getInstance().getUserLogged(), selectedCharacter.getId_character());
+                    usersDAO.save(user); // Guardar los cambios en el usuario
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                observableList.remove(selectedCharacter);
+            }
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Advertencia");
+            alert.setHeaderText("No se seleccionó ningún personaje");
+            alert.setContentText("Por favor, selecciona un personaje para vender.");
+            alert.showAndWait();
+        }
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         if (TableView.getItems().isEmpty()) {
             Users user = Session.getInstance().getUserLogged();
-            List<Characters> charactersList = UsersDAO.build().findAllCharacterFromObtained(user);
+
+            List<Characters> charactersList = UsersDAO.build().new UsersLazyAll(user.getId_user(), user.getName_user(), user.getPassword(), user.getDragon_stones(), user.getCharacters_list(), user.isAdmin()).UsersLazyAll();
+
             this.observableList = FXCollections.observableArrayList(charactersList);
             TableView.setItems(observableList);
             id_CharacterColumn.setCellValueFactory(characters -> new SimpleIntegerProperty(characters.getValue().getId_character()).asObject());
@@ -112,3 +148,4 @@ public class CharacterListController extends Controller implements Initializable
     }
 
 }
+

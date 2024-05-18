@@ -11,11 +11,9 @@ public class Users {
     private int Dragon_stones;
     private List<Characters> Characters_list;
     private boolean Admin;
-    private boolean characterAssigned;
 
     public Users() {
         Characters_list = new ArrayList<>();
-        characterAssigned = false; // Por defecto, el personaje no está asignado
     }
 
     public Users(int id_user, String name_user, String password, int dragon_stones, List<Characters> characters_list, boolean admin) {
@@ -25,7 +23,6 @@ public class Users {
         Dragon_stones = dragon_stones;
         Characters_list = characters_list;
         Admin = admin;
-        characterAssigned = false; // Por defecto, el personaje no está asignado
     }
 
     public int getId_user() {
@@ -101,4 +98,5 @@ public class Users {
                 ", Admin=" + Admin +
                 '}';
     }
+
 }

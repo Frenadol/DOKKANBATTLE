@@ -2,7 +2,7 @@ package com.github.Frenadol.model.dao;
 
 import com.github.Frenadol.model.connection.ConnectionMariaDB;
 import com.github.Frenadol.model.entity.*;
-
+import com.github.Frenadol.view.CharacterListController;
 
 import java.io.IOException;
 import java.sql.*;
@@ -18,7 +18,7 @@ public class UsersDAO implements DAO<Users, String> {
     private static final String DELETE = "DELETE FROM users WHERE Id_user=?";
     private static final String FIND_BY_NAME = "SELECT * FROM users WHERE Name_user=?";
     private static final String INSERT_OBTAINED = "INSERT INTO obtained (Id_user, Id_character) VALUES (?, ?)";
-    private static final String DELETE_OBTAINED = "DELETE FROM obtained WHERE Id_character = ?";
+    private static final String DELETE_OBTAINED = "DELETE FROM obtained WHERE Id_user = ? AND Id_character = ?";
     private static final String FIND_ALL_OBTAINED = "SELECT c.* FROM characters c, obtained o WHERE c.Id_character = o.Id_character AND o.Id_user = ? GROUP BY c.Id_character";
 
     private Connection conn;
@@ -32,17 +32,11 @@ public class UsersDAO implements DAO<Users, String> {
         if (entity == null) {
             return null;
         }
-        try {
-            if (findById(entity) == null) {
-                insertUser(entity);
-            } else {
-                updateUser(entity);
-                deleteObtainedCharacters(entity);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if (findById(entity) == null) {
+            insertUser(entity);
+        } else {
+            updateUser(entity);
         }
-
         return entity;
     }
 
@@ -62,26 +56,24 @@ public class UsersDAO implements DAO<Users, String> {
         }
     }
 
-
-
-
-    public void insertObtainedCharacters(int userKey, int characterKey) {
-        if (userKey != 0 && characterKey!=0) {
-                try (PreparedStatement pst = conn.prepareStatement(INSERT_OBTAINED)) {
-                    pst.setInt(1, userKey);
-                    pst.setInt(2, characterKey);
-                    pst.executeUpdate();
-                } catch (SQLException e) {
-                    e.printStackTrace();
+    public void insertObtainedCharacters(Users user, int characterKey) {
+        if (user.getId_user() != 0 && characterKey != 0) {
+            try {
+                List<Characters> obtainedCharacters = findAllCharacterFromObtained(user);
+                boolean isCharacterObtained = obtainedCharacters.stream()
+                        .anyMatch(character -> character.getId_character() == characterKey);
+                if (!isCharacterObtained) {
+                    try (PreparedStatement pst = conn.prepareStatement(INSERT_OBTAINED)) {
+                        pst.setInt(1, user.getId_user());
+                        pst.setInt(2, characterKey);
+                        pst.executeUpdate();
+                    }
                 }
-            } else{
-                System.out.println("Warning: Character without Id_character.");
-
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
-
-
+        }
     }
-
 
     public void updateUser(Users entity) {
         try (PreparedStatement pst = conn.prepareStatement(UPDATE)) {
@@ -96,17 +88,16 @@ public class UsersDAO implements DAO<Users, String> {
         }
     }
 
-
-    public void deleteObtainedCharacters(Users entity) throws SQLException {
+    public void deleteObtainedCharacters(Users user, int characterKey) throws SQLException {
         try (PreparedStatement pst = conn.prepareStatement(DELETE_OBTAINED)) {
-            pst.setInt(1, entity.getId_user());
+            pst.setInt(1, user.getId_user());
+            pst.setInt(2, characterKey);
             pst.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
-    public List<Characters> findAllCharacterFromObtained(Users users){
+    public List<Characters> findAllCharacterFromObtained(Users users) throws SQLException {
         List<Characters> result = new ArrayList<>();
         try (PreparedStatement pst = conn.prepareStatement(FIND_ALL_OBTAINED)) {
             pst.setInt(1, users.getId_user());
@@ -127,11 +118,10 @@ public class UsersDAO implements DAO<Users, String> {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            throw e;
         }
         return result;
     }
-
-
     @Override
     public Users findById(Users id) {
         Users result = null;
@@ -153,7 +143,6 @@ public class UsersDAO implements DAO<Users, String> {
         }
         return result;
     }
-
 
     @Override
     public Users findByName(String name) {
@@ -196,7 +185,6 @@ public class UsersDAO implements DAO<Users, String> {
         return entity;
     }
 
-
     @Override
     public void close() throws IOException {
 
@@ -204,6 +192,43 @@ public class UsersDAO implements DAO<Users, String> {
 
     public static UsersDAO build() {
         return new UsersDAO();
+    }
+
+    public class UsersLazyAll extends Users {
+        private static final String FIND_ALL = "SELECT * FROM Characters cha,obtained ob,Users us WHERE cha.Id_character=ob.Id_character AND ob.Id_user=us.Id_user AND us.Id_user=?";
+
+        public UsersLazyAll(int id_user, String name_user, String password, int dragon_stones, List<Characters> characters_list, boolean admin) {
+            super(id_user, name_user, password, dragon_stones, characters_list, admin);
+        }
+
+        public List<Characters> UsersLazyAll() {
+            List<Characters> result = new ArrayList<>();
+            if (super.getCharacters_list()!=null) {
+
+                try (PreparedStatement pst = ConnectionMariaDB.getConnection().prepareStatement(FIND_ALL)) {
+                    pst.setInt(1,getId_user());
+                    try (ResultSet res = pst.executeQuery()){
+                        while (res.next()) {
+                            Characters c = new Characters();
+                            c.setId_character(res.getInt("Id_character"));
+                            c.setType(res.getString("Type"));
+                            c.setCharacter_class("Character_class");
+                            c.setName(res.getString("Name"));
+                            c.setCategories(res.getString("Categories"));
+                            c.setSuperAttack(res.getString("SuperAttack"));
+                            c.setUltraSuperAttack(res.getString("UltraSuperAttack"));
+                            c.setRarety(res.getString("Rarety"));
+                            c.setPassive(res.getString("Passive"));
+                            c.setVisual(res.getBytes("Visual"));
+                            result.add(c);
+                    }
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            return result;
+        }
     }
 }
 
