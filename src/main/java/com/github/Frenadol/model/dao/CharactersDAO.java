@@ -12,11 +12,10 @@ public class CharactersDAO implements DAO<Characters,String> {
     private final static String INSERT = "INSERT INTO characters (Id_character,Type,Class,Name,Categories,SuperAttack,UltraSuperAttack,Rarety,Passive,Visual) VALUES (?,?,?,?,?,?,?,?,?,?)";
     private final static String UPDATE = "UPDATE characters SET Name=?, Passive=? WHERE Id_character=?";
     private final static String FIND_BY_NAME = "SELECT * FROM characters where Name=?";
+    private final static String COUNT_CHARACTERS = "SELECT COUNT(*) FROM characters";
+
     private final static String FIND_BY_ID_CHARACTER = "SELECT * FROM characters where Id_character=?";
     private final static String FIND_BY_PASSIVE = "SELECT * FROM characters where Passive=?";
-
-    private final static String FIND_IDS = "SELECT * FROM characters where Id_character=?";
-    private final static String FIND_BY_CATEGORY = "SELECT * FROM characters where Categories=?";
     private final static String FINDALL = "SELECT * FROM characters";
     private static final String DELETE = "DELETE FROM characters WHERE Id_character=?";
     private Connection conn;
@@ -110,40 +109,19 @@ public class CharactersDAO implements DAO<Characters,String> {
         }
         return result;
     }
-
-    /**
-     *
-     * @
-     * @
-
-    public Characters findIDS(int id){
-        Characters result=null;
-        try (PreparedStatement pst=ConnectionMariaDB.getConnection().prepareStatement(FIND_IDS)){
-    pst.setInt(1,id);
-    try(ResultSet res= pst.executeQuery()){
-        if(res.next()){
-            Characters c = new Characters();
-            c.setId_character(res.getInt("Id_character"));
-            c.setType(res.getString("Type"));
-            c.setCharacter_class(res.getString("Class"));
-            c.setName(res.getString("Name"));
-            c.setCategories(res.getString("Categories"));
-            c.setSuperAttack(res.getString("SuperAttack"));
-            c.setUltraSuperAttack(res.getString("UltraSuperAttack"));
-            c.setRarety(res.getString("Rarety"));
-            c.setPassive(res.getString("Passive"));
-            c.setVisual(res.getBytes("Visual"));
-            result = c;
-        }
-    }
+    public int countCharacters() {
+        int count = 0;
+        try (PreparedStatement pst = ConnectionMariaDB.getConnection().prepareStatement(COUNT_CHARACTERS)) {
+            try(ResultSet res = pst.executeQuery()) {
+                if (res.next()) {
+                    count = res.getInt(1);
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-
-        return result;
+        return count;
     }
-     */
     @Override
     public Characters findById(Characters id) {
         Characters result=null;
@@ -228,30 +206,7 @@ public class CharactersDAO implements DAO<Characters,String> {
         }
         return result;
     }
-    public List<Characters> findByCategory(String category) {
-        List<Characters> result = new ArrayList<>();
-        try (PreparedStatement pst = ConnectionMariaDB.getConnection().prepareStatement(FIND_BY_CATEGORY)) {
-            pst.setString(1, category);
-            ResultSet res = pst.executeQuery();
-            while (res.next()) {
-                Characters character = new Characters();
-                character.setId_character(res.getInt("Id_character"));
-                character.setType(res.getString("Type"));
-                character.setCharacter_class(res.getString("Character_class"));
-                character.setName(res.getString("Name"));
-                character.setCategories(res.getString("Categories"));
-                character.setSuperAttack(res.getString("SuperAttack"));
-                character.setUltraSuperAttack(res.getString("UltraSuperAttack"));
-                character.setRarety(res.getString("Rarety"));
-                character.setPassive(res.getString("Passive"));
-                result.add(character);
-            }
-            res.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
+
 
     @Override
     public Characters delete(Characters entity) throws SQLException {

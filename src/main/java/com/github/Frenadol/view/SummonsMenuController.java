@@ -14,21 +14,23 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.layout.StackPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.ResourceBundle;
+import java.util.*;
 
 import static com.github.Frenadol.model.dao.Character_portalDAO.build;
 
@@ -38,8 +40,15 @@ public class SummonsMenuController implements Initializable {
 
     @FXML
     private TableColumn<Character_portal, String> nameColumn;
-    private final static int CHARACTERS = 8;
     private ObservableList<Character_portal> observableList;
+    @FXML
+    private MediaView mediaView;
+
+    private List<String> videoPaths = Arrays.asList(
+            "/MediaContent/BlackRift.mp4",
+            "/MediaContent/GodSummonsAnimations.mp4",
+            "/MediaContent/GohanSummonsAnimations.mp4"
+    );
 
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
@@ -50,7 +59,7 @@ public class SummonsMenuController implements Initializable {
 
     }
 
-    @FXML
+
     private void summonButtonClicked() {
         Users user = Session.getInstance().getUserLogged();
         UsersDAO usersDAO = new UsersDAO();
@@ -83,7 +92,9 @@ public class SummonsMenuController implements Initializable {
         List<Characters> summonedCharacters = new ArrayList<>();
         int randomIndex = generateRandomIndex();
         Characters character = build().findAllLocated(randomIndex);
-        if (character != null && !user.getCharacters_list().contains(character)) {
+        if (character != null) {
+            summonedCharacters.add(character);
+            user.getCharacters_list().add(character);
             List<Characters> obtainedCharacters = new ArrayList<>();
             try {
                 obtainedCharacters = usersDAO.findAllCharacterFromObtained(user);
@@ -99,8 +110,6 @@ public class SummonsMenuController implements Initializable {
                 }
             }
             if (!isCharacterObtained) {
-                summonedCharacters.add(character);
-                user.getCharacters_list().add(character);
                 usersDAO.insertObtainedCharacters(user, character.getId_character());
             } else {
                 showStonesCompensationAlert();
@@ -113,6 +122,7 @@ public class SummonsMenuController implements Initializable {
             showSummonedCharactersDialog(summonedCharacters);
         }
     }
+
     private void showStonesCompensationAlert() {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Compensación por personaje repetido");
@@ -148,9 +158,58 @@ public class SummonsMenuController implements Initializable {
     private Random random = new Random();
 
     private int generateRandomIndex() {
-        return random.nextInt(CHARACTERS) + 1;
+        int characters = new CharactersDAO().countCharacters();
+        return random.nextInt(characters) + 1;
     }
+
     @FXML
     private void onClose() {
+    }
+
+    @FXML
+    private void playRandomVideo() {
+        int randomIndex = random.nextInt(videoPaths.size());
+        String videoPath = videoPaths.get(randomIndex);
+
+        URL resource = getClass().getResource(videoPath);
+        if (resource != null) {
+            Media media = new Media(resource.toString());
+            MediaPlayer mediaPlayer = new MediaPlayer(media);
+
+            // Crea una nueva ventana para mostrar el video
+            Stage videoStage = new Stage();
+            videoStage.setTitle("Video");
+
+            // Utiliza un StackPane para centrar el MediaView
+            StackPane root = new StackPane(mediaView);
+            Scene scene = new Scene(root);
+
+            videoStage.setScene(scene);
+            videoStage.show();
+
+            // Asegura que la ventana del video esté al frente
+            videoStage.toFront();
+
+            // Ajusta el tamaño de la ventana al tamaño del video
+            videoStage.setWidth(media.getWidth());
+            videoStage.setHeight(media.getHeight());
+
+            // Ajusta el tamaño del video al tamaño de la ventana
+            mediaView.fitWidthProperty().bind(scene.widthProperty());
+            mediaView.fitHeightProperty().bind(scene.heightProperty());
+            mediaView.setPreserveRatio(true);
+
+            // Establece el MediaPlayer para el MediaView y comienza a reproducir el video
+            mediaView.setMediaPlayer(mediaPlayer);
+            mediaPlayer.setAutoPlay(true);
+
+            // Establece un Runnable para ejecutarse cuando el video haya terminado
+            mediaPlayer.setOnEndOfMedia(() -> {
+                videoStage.close(); // Cierra la ventana del video
+                summonButtonClicked(); // Llama a la secuencia de conseguir el personaje o las piedras
+            });
+        } else {
+            System.out.println("No se pudo encontrar el recurso: " + videoPath);
+        }
     }
 }
