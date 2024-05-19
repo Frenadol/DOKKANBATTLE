@@ -108,6 +108,14 @@ public class CharactersUpdateController extends Controller implements Initializa
 
             dialog.setResultConverter(dialogButton -> {
                 if (dialogButton == acceptButtonType) {
+                    if (fieldComboBox.getValue() == null || newValueTextField.getText().isEmpty()) {
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setTitle("Advertencia");
+                        alert.setHeaderText("Campo o valor no seleccionado");
+                        alert.setContentText("Por favor, selecciona un campo y proporciona un nuevo valor.");
+                        alert.showAndWait();
+                        return null;
+                    }
                     return new Pair<>(fieldComboBox.getValue(), newValueTextField.getText());
                 }
                 return null;
@@ -156,4 +164,5 @@ public class CharactersUpdateController extends Controller implements Initializa
             alert.showAndWait();
         }
     }
-}
+    }
+
