@@ -8,19 +8,23 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.media.MediaView?>
 
-<AnchorPane fx:id="anchorPane" prefHeight="543.0" prefWidth="769.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.Frenadol.view.SummonsMenuController">
+<?import java.net.URL?>
+<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.Frenadol.view.SummonsMenuController">
+    <stylesheets>
+        <URL value="@summonsMenu.css" />
+    </stylesheets>
     <children>
-        <MediaView fx:id="mediaView" fitHeight="543.0" fitWidth="769.0" />
-        <ImageView fitHeight="211.0" fitWidth="329.0" layoutX="253.0" layoutY="174.0" pickOnBounds="true" preserveRatio="true">
+        <MediaView fx:id="mediaView" fitHeight="543.0" fitWidth="769.0" layoutX="718.0" layoutY="94.0" />
+        <ImageView fitHeight="211.0" fitWidth="329.0" layoutX="773.0" layoutY="450.0" pickOnBounds="true" preserveRatio="true">
             <image>
                 <Image url="@../../../../MediaContent/GokuBlackBanner.jpeg" />
             </image>
         </ImageView>
-        <Button layoutX="376.0" layoutY="402.0" mnemonicParsing="false" onAction="#playRandomVideo" text="Summon(50)" />
-        <Button layoutX="656.0" layoutY="445.0" mnemonicParsing="false" onMouseClicked="#goToMainMenu" text="Menu anterior" />
-        <TableView fx:id="character_PortalTableView" layoutX="300.0" layoutY="14.0" prefHeight="150.0" prefWidth="236.0">
+        <Button layoutX="896.0" layoutY="699.0" mnemonicParsing="false" onAction="#playRandomVideo" text="Summon(50)" />
+        <Button layoutX="1155.0" layoutY="618.0" mnemonicParsing="false" onMouseClicked="#goToMainMenu" text="Menu anterior" />
+        <TableView fx:id="character_PortalTableView" layoutX="773.0" layoutY="359.0" prefHeight="66.0" prefWidth="329.0">
             <columns>
-                <TableColumn fx:id="nameColumn" prefWidth="235.20001220703125" text="Nombre del banner" />
+                <TableColumn fx:id="nameColumn" prefWidth="235.199951171875" text="Nombre del banner" />
             </columns>
         </TableView>
     </children>

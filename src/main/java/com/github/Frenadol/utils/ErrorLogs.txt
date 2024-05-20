@@ -1,0 +1,82 @@
+java.io.IOException
+2024-05-20 11:14:10 - IOException: null
+2024-05-20 11:14:14 - Exception: Usuario incorrecto, introduzca correctamente el nombre de usuario.
+2024-05-20 11:17:27 - Exception: Credenciales incorrectas para el acceso de administrador. Introduzca las credenciales correctas.
+2024-05-20 12:15:35 - Usuario incorrecto, introduzca correctamente el nombre de usuario.
+2024-05-20 12:15:35 - Usuario incorrecto, introduzca correctamente el nombre de usuario.
+2024-05-20 12:15:36 - Usuario incorrecto, introduzca correctamente el nombre de usuario.
+2024-05-20 12:15:36 - Usuario incorrecto, introduzca correctamente el nombre de usuario.
+2024-05-20 12:15:36 - Usuario incorrecto, introduzca correctamente el nombre de usuario.
+2024-05-20 12:15:36 - Usuario incorrecto, introduzca correctamente el nombre de usuario.
+2024-05-20 12:15:36 - Usuario incorrecto, introduzca correctamente el nombre de usuario.
+2024-05-20 12:15:36 - Usuario incorrecto, introduzca correctamente el nombre de usuario.
+2024-05-20 12:15:36 - Usuario incorrecto, introduzca correctamente el nombre de usuario.
+2024-05-20 12:15:37 - Usuario incorrecto, introduzca correctamente el nombre de usuario.
+2024-05-20 12:15:37 - Usuario incorrecto, introduzca correctamente el nombre de usuario.
+2024-05-20 12:15:37 - Usuario incorrecto, introduzca correctamente el nombre de usuario.
+2024-05-20 12:20:36 - IOException: null
+2024-05-20 12:20:36 - Usuario incorrecto, introduzca bien el nombre de usuario
+2024-05-20 13:59:50 - IOException: null
+2024-05-20 13:59:50 - Usuario incorrecto, introduzca bien el nombre de usuario
+2024-05-20 14:09:14 - IOException: null
+2024-05-20 14:09:14 - Usuario incorrecto, introduzca bien el nombre de usuario
+2024-05-20 14:28:51 - IOException: null
+2024-05-20 14:28:51 - Usuario incorrecto, introduzca bien el nombre de usuario
+2024-05-20 14:40:01 - IOException: null
+2024-05-20 14:40:01 - Usuario incorrecto, introduzca bien el nombre de usuario
+2024-05-20 16:34:48 - IOException: null
+2024-05-20 16:34:48 - Usuario incorrecto, introduzca bien el nombre de usuario
+2024-05-20 17:07:27 - IOException: null
+2024-05-20 17:07:27 - Usuario incorrecto, introduzca bien el nombre de usuario
+2024-05-20 17:07:44 - IOException: null
+2024-05-20 17:07:44 - Usuario incorrecto, introduzca bien el nombre de usuario
+2024-05-20 17:08:22 - Usuario registrado con éxito!
+2024-05-20 17:08:34 - Contraseña invalida, introduzca una contraseña valida
+2024-05-20 17:08:49 - IOException: null
+2024-05-20 17:08:49 - Usuario incorrecto, introduzca bien el nombre de usuario
+2024-05-20 17:14:14 - IOException: null
+2024-05-20 17:14:15 - Usuario incorrecto, introduzca bien el nombre de usuario
+2024-05-20 17:14:23 - IOException: null
+2024-05-20 17:14:23 - Usuario incorrecto, introduzca bien el nombre de usuario
+2024-05-20 17:37:17 - No se pudo encontrar el recurso: /MediaContent/GohanSummonsAnimation.mp4
+2024-05-20 17:37:53 - No se pudo encontrar el recurso: /MediaContent/GohanSummonsAnimation.mp4
+2024-05-20 17:38:00 - No se pudo encontrar el recurso: /MediaContent/GohanSummonsAnimation.mp4
+2024-05-20 17:38:01 - No se pudo encontrar el recurso: /MediaContent/GohanSummonsAnimation.mp4
+2024-05-20 17:46:43 - Contraseña invalida, introduzca una contraseña valida
+2024-05-20 17:47:06 - Contraseña invalida, introduzca una contraseña valida
+2024-05-20 17:47:25 - Contraseña invalida, introduzca una contraseña valida
+2024-05-20 18:08:07 - IOException: null
+2024-05-20 18:08:07 - Usuario incorrecto, introduzca bien el nombre de usuario
+2024-05-20 18:10:32 - Contraseña invalida, introduzca una contraseña valida
+2024-05-20 19:08:28 - IOException: null
+2024-05-20 19:08:28 - Usuario incorrecto, introduzca bien el nombre de usuario
+2024-05-20 19:08:38 - Usuario registrado con éxito!
+2024-05-20 19:10:49 - Personaje guardado con éxito!
+2024-05-20 19:10:52 - LoadException: URL is not a valid type.
+/C:/Users/ferna/IdeaProjects/PROYECTODOKKANBATTLE/target/classes/com/github/Frenadol/view/charactersRepo.fxml:12
+
+2024-05-20 19:10:52 - Error al ir al repositorio de personajes: 
+2024-05-20 19:10:57 - LoadException: URL is not a valid type.
+/C:/Users/ferna/IdeaProjects/PROYECTODOKKANBATTLE/target/classes/com/github/Frenadol/view/charactersRepo.fxml:12
+
+2024-05-20 19:10:57 - Error al ir al repositorio de personajes: 
+2024-05-20 19:14:49 - LoadException: URL is not a valid type.
+/C:/Users/ferna/IdeaProjects/PROYECTODOKKANBATTLE/target/classes/com/github/Frenadol/view/charactersRepo.fxml:12
+
+2024-05-20 19:16:40 - LoadException: URL is not a valid type.
+/C:/Users/ferna/IdeaProjects/PROYECTODOKKANBATTLE/target/classes/com/github/Frenadol/view/charactersRepo.fxml:12
+
+2024-05-20 19:16:58 - LoadException: URL is not a valid type.
+/C:/Users/ferna/IdeaProjects/PROYECTODOKKANBATTLE/target/classes/com/github/Frenadol/view/charactersRepo.fxml:12
+
+2024-05-20 19:16:58 - Error al ir al repositorio de personajes: 
+2024-05-20 19:34:50 - SQLIntegrityConstraintViolationException: (conn=167) Duplicate entry 'ss' for key 'Name'
+2024-05-20 19:34:50 - Personaje guardado con éxito!
+2024-05-20 19:34:51 - SQLIntegrityConstraintViolationException: (conn=167) Duplicate entry 'ss' for key 'Name'
+2024-05-20 19:34:52 - Personaje guardado con éxito en el portal!
+2024-05-20 19:38:04 - Personaje guardado con éxito en el portal!
+2024-05-20 19:56:03 - Usuario registrado con éxito!
+2024-05-20 20:00:23 - Contraseña invalida, introduzca una contraseña valida
+2024-05-20 20:02:08 - Usuario registrado con éxito!
+2024-05-20 20:02:41 - Usuario registrado con éxito!
+2024-05-20 20:03:56 - Usuario registrado con éxito!

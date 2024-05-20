@@ -38,17 +38,25 @@ public class AnimationsGalleryController extends Controller implements Initializ
 
     private ObservableList<Characters> observableList;
     private MediaPlayer mediaPlayer;
-
+    /**
+     * This method is called when the view is opened.
+     */
     @Override
     public void onOpen(Object input) {
 
     }
-
+    /**
+     * This method is called when the view is closed.
+     * Currently, it does not perform any actions.
+     */
     @Override
     public void onClose(Object output) {
 
     }
-
+    /**
+     * This method is called to initialize the controller after its root element has been completely processed.
+     * It populates the TableView with characters from the database.
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         if (TableView.getItems().isEmpty()) {
@@ -75,7 +83,10 @@ public class AnimationsGalleryController extends Controller implements Initializ
             });
         }
     }
-
+    /**
+     * This method is used to play a video.
+     * It stops any currently playing video, creates a new MediaPlayer for the specified video, and starts playing it.
+     */
     @FXML
     private void playVideo(String videoPath) {
         if (mediaPlayer != null) {
@@ -94,6 +105,9 @@ public class AnimationsGalleryController extends Controller implements Initializ
         });
 
     }
+    /**
+     * This method is used to stop the currently playing video.
+     */
     @FXML
     private void stopVideo() {
         if (mediaPlayer != null) {
@@ -101,14 +115,19 @@ public class AnimationsGalleryController extends Controller implements Initializ
             mediaView.setMediaPlayer(null);
         }
     }
-
+    /**
+     * This method is used to pause the currently playing video.
+     */
     @FXML
     private void pauseVideo() {
         if (mediaPlayer != null && mediaPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
             mediaPlayer.pause();
         }
     }
-
+    /**
+     * This method is used to navigate to the main menu.
+     * It stops any currently playing video and sets the root of the application to the "mainMenu" screen.
+     */
     @FXML
     public void goToMainMenu() throws IOException {
         if (mediaPlayer != null) {
@@ -116,7 +135,10 @@ public class AnimationsGalleryController extends Controller implements Initializ
         }
         App.setRoot("mainMenu");
     }
-
+    /**
+     * These methods are used to play specific animations.
+     * Each method calls the playVideo method with the path to the corresponding animation video.
+     */
     @FXML
     private void CoolerAnimations() {
         playVideo("/MediaContent/Cooler.mp4");

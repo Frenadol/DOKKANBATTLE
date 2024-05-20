@@ -2,6 +2,7 @@ package com.github.Frenadol.model.dao;
 
 import com.github.Frenadol.model.connection.ConnectionMariaDB;
 import com.github.Frenadol.model.entity.*;
+import com.github.Frenadol.utils.ErrorLog;
 
 import java.io.IOException;
 import java.sql.*;
@@ -23,14 +24,17 @@ public class CharactersDAO implements DAO<Characters,String> {
     public CharactersDAO() {
         conn = ConnectionMariaDB.getConnection();
     }
-
+    /**
+     * Saves a Characters object to the database. If the object already exists, it is updated.
+     * @param entity The Characters object to save.
+     * @return The saved or updated Characters object.
+     */
     @Override
     public Characters save(Characters entity) {
         Characters result = new Characters();
         if (entity == null || entity.getId_character() == 0) return result;
         Characters c = findById(entity);
         if (c == null){
-            //INSERT
             try (PreparedStatement pst = ConnectionMariaDB.getConnection().prepareStatement(INSERT,Statement.RETURN_GENERATED_KEYS)) {
                pst.setInt(1, entity.getId_character());
                pst.setString(2, entity.getType());
@@ -43,23 +47,26 @@ public class CharactersDAO implements DAO<Characters,String> {
                 pst.setString(9, entity.getPassive());
                 pst.setBytes(10,entity.getVisual());
                 pst.executeUpdate();
-
             } catch (SQLException e) {
-                e.printStackTrace();
+                ErrorLog.fileRead(e);
             }
         } else {
-            //UPDATE
             try (PreparedStatement pst = ConnectionMariaDB.getConnection().prepareStatement(UPDATE)) {
                 pst.setString(1, entity.getName());
                 pst.setString(2, entity.getPassive());
                 pst.setInt(3, entity.getId_character());
                 pst.executeUpdate();
             } catch (SQLException e) {
-                e.printStackTrace();
+                ErrorLog.fileRead(e);
             }
         }
         return result;
     }
+    /**
+     * Finds a Characters object by its passive.
+     * @param passive The passive attribute to search for.
+     * @return The found Characters object, or null if not found.
+     */
     public Characters findByPassive(String passive) {
         Characters result = null;
         try (PreparedStatement pst = ConnectionMariaDB.getConnection().prepareStatement(FIND_BY_PASSIVE)) {
@@ -80,10 +87,15 @@ public class CharactersDAO implements DAO<Characters,String> {
             }
             res.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            ErrorLog.fileRead(e);
         }
         return result;
     }
+    /**
+     * Finds a Characters object by its name.
+     * @param name The name to search for.
+     * @return The found Characters object, or null if not found.
+     */
     @Override
     public Characters findByName(String name) {
         Characters result = null;
@@ -105,10 +117,14 @@ public class CharactersDAO implements DAO<Characters,String> {
             }
             res.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            ErrorLog.fileRead(e);
         }
         return result;
     }
+    /**
+     * Counts the total number of characters in the database.
+     * @return The total number of characters.
+     */
     public int countCharacters() {
         int count = 0;
         try (PreparedStatement pst = ConnectionMariaDB.getConnection().prepareStatement(COUNT_CHARACTERS)) {
@@ -118,10 +134,15 @@ public class CharactersDAO implements DAO<Characters,String> {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            ErrorLog.fileRead(e);
         }
         return count;
     }
+    /**
+     * Finds a Characters object by its ID.
+     * @param id The ID of the Characters object.
+     * @return The found Characters object, or null if not found.
+     */
     @Override
     public Characters findById(Characters id) {
         Characters result=null;
@@ -144,43 +165,14 @@ public class CharactersDAO implements DAO<Characters,String> {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            ErrorLog.fileRead(e);
         }
         return result;
     }
-
     /**
-     *
-     * @param
-     * @return
-
-    public Characters findRandomId(int id){
-    Characters result=null;
-    try (PreparedStatement pst = ConnectionMariaDB.getConnection().prepareStatement(FIND_BY_ID_CHARACTER)) {
-        pst.setInt(1, id);
-        try(ResultSet res = pst.executeQuery()) {
-            if (res.next()) {
-                Characters c = new Characters();
-                c.setId_character(res.getInt("Id_character"));
-                c.setType(res.getString("Type"));
-                c.setCharacter_class(res.getString("Class"));
-                c.setName(res.getString("Name"));
-                c.setCategories(res.getString("Categories"));
-                c.setSuperAttack(res.getString("SuperAttack"));
-                c.setUltraSuperAttack(res.getString("UltraSuperAttack"));
-                c.setRarety(res.getString("Rarety"));
-                c.setPassive(res.getString("Passive"));
-                c.setVisual(res.getBytes("Visual"));
-                result = c;
-            }
-        }
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-    return result;
-}
+     * Finds all Characters objects in the database.
+     * @return A list of all Characters objects.
      */
-
     @Override
     public List<Characters> findAll() {
         List<Characters> result = new ArrayList<>();
@@ -206,8 +198,12 @@ public class CharactersDAO implements DAO<Characters,String> {
         }
         return result;
     }
-
-
+    /**
+     * Deletes a Characters object from the database.
+     * @param entity The Characters object to delete.
+     * @return The deleted Characters object, or null if the deletion failed.
+     * @throws SQLException if a database access error occurs.
+     */
     @Override
     public Characters delete(Characters entity) throws SQLException {
         if (entity != null) {
@@ -215,18 +211,24 @@ public class CharactersDAO implements DAO<Characters,String> {
                 pst.setString(1, String.valueOf(entity.getId_character()));
                 pst.executeUpdate();
             } catch (SQLException e) {
-                e.printStackTrace();
+                ErrorLog.fileRead(e);
                 entity = null;
             }
         }
         return entity;
     }
-
+    /**
+     * Closes the DAO, releasing any resources it may be holding.
+     * @throws IOException if an I/O error occurs.
+     */
     @Override
     public void close() throws IOException {
 
     }
-
+    /**
+     * Builds and returns a new CharactersDAO instance.
+     * @return A new CharactersDAO instance.
+     */
     public static CharactersDAO build(){
         return new CharactersDAO();
     }

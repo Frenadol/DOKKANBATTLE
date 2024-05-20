@@ -5,6 +5,7 @@ import com.github.Frenadol.model.dao.UsersDAO;
 import com.github.Frenadol.model.entity.Session;
 import com.github.Frenadol.model.entity.Users;
 import com.github.Frenadol.model.entity.Characters;
+import com.github.Frenadol.utils.ErrorLog;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -55,16 +56,27 @@ public class CharacterListController extends Controller implements Initializable
     private int soldCharacterId;
 
     private ObservableList<Characters> observableList;
-
+    /**
+     * This method is called when the view is opened.
+     * Currently, it does not perform any actions.
+     */
     @Override
     public void onOpen(Object input) {
 
     }
-
+    /**
+     * This method is called when the view is closed.
+     * Currently, it does not perform any actions.
+     */
     @Override
     public void onClose(Object output) {
 
     }
+    /**
+     * This method is used to sell a character.
+     * It gets the character selected in the TableView, displays a confirmation dialog, and if the user confirms,
+     * it removes the character from the user's list, deletes it from the database, and removes it from the TableView.
+     */
     @FXML
     public void sellCharacter() {
         Characters selectedCharacter = TableView.getSelectionModel().getSelectedItem();
@@ -82,28 +94,26 @@ public class CharacterListController extends Controller implements Initializable
                 try {
                     UsersDAO usersDAO = UsersDAO.build();
                     usersDAO.deleteObtainedCharacters(Session.getInstance().getUserLogged(), selectedCharacter.getId_character());
-                    usersDAO.save(user); // Guardar los cambios en el usuario
+                    usersDAO.save(user);
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    ErrorLog.fileRead(e);
+                    showAlert("Error al vender el personaje. Inténtelo de nuevo.");
                 }
                 observableList.remove(selectedCharacter);
             }
         } else {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Advertencia");
-            alert.setHeaderText("No se seleccionó ningún personaje");
-            alert.setContentText("Por favor, selecciona un personaje para vender.");
-            alert.showAndWait();
+            showAlert("Por favor, selecciona un personaje para vender.");
         }
     }
-
+    /**
+     * This method is called to initialize the controller after its root element has been completely processed.
+     * It populates the TableView with the characters from the logged in user's list.
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         if (TableView.getItems().isEmpty()) {
             Users user = Session.getInstance().getUserLogged();
-
             List<Characters> charactersList = UsersDAO.build().new UsersLazyAll(user.getId_user(), user.getName_user(), user.getPassword(), user.getDragon_stones(), user.getCharacters_list(), user.isAdmin()).UsersLazyAll();
-
             this.observableList = FXCollections.observableArrayList(charactersList);
             TableView.setItems(observableList);
             id_CharacterColumn.setCellValueFactory(characters -> new SimpleIntegerProperty(characters.getValue().getId_character()).asObject());
@@ -120,7 +130,6 @@ public class CharacterListController extends Controller implements Initializable
                 if (visualData != null) {
                     ByteArrayInputStream bis = new ByteArrayInputStream(visualData);
                     Image image = new Image(bis);
-
                     ImageView imageView = new ImageView(image);
                     imageView.setFitWidth(200);
                     imageView.setFitHeight(200);
@@ -132,7 +141,6 @@ public class CharacterListController extends Controller implements Initializable
                         stage.setScene(scene);
                         stage.show();
                     });
-
                     return new SimpleObjectProperty<>(imageView);
                 } else {
                     System.out.println("visualData es null");
@@ -142,10 +150,26 @@ public class CharacterListController extends Controller implements Initializable
         }
 
     }
+    /**
+     * This method is used to navigate to the main menu.
+     * It tries to set the root of the application to the "mainMenu" screen.
+     * If an error occurs during this process, it logs the error.
+     */
     @FXML
-    public void goToMainMenu() throws IOException {
-        App.setRoot("mainMenu");
+    public void goToMainMenu() {
+        try {
+            App.setRoot("mainMenu");
+        } catch (IOException e) {
+            ErrorLog.fileRead(e);
+        }
     }
-
+    /**
+     * This method is used to display an alert dialog with a specified message.
+     * It creates a new Alert object, sets the provided message as its content, and then displays the alert.
+     */
+    private void showAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setContentText(message);
+        alert.show();
+    }
 }
-

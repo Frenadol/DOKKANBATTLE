@@ -6,6 +6,7 @@ import com.github.Frenadol.model.dao.UsersDAO;
 import com.github.Frenadol.model.entity.Session;
 import com.github.Frenadol.model.entity.Users;
 import com.github.Frenadol.model.entity.Characters;
+import com.github.Frenadol.utils.ErrorLog;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -14,6 +15,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -55,17 +57,26 @@ public class CharactersRepoController extends Controller implements Initializabl
     private Button backToAdminMenuButton;
 
     private ObservableList<Characters> observableList;
-
+    /**
+     * This method is called when the view is opened.
+     * Currently, it does not perform any actions.
+     */
     @Override
     public void onOpen(Object input) {
 
     }
-
+    /**
+     * This method is called when the view is closed.
+     * Currently, it does not perform any actions.
+     */
     @Override
     public void onClose(Object output) {
 
     }
-
+    /**
+     * This method is called to initialize the controller after its root element has been completely processed.
+     * It populates the TableView with characters from the database if it is empty.
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         if (TableView.getItems().isEmpty()) {
@@ -86,7 +97,6 @@ public class CharactersRepoController extends Controller implements Initializabl
                 if (visualData != null) {
                     ByteArrayInputStream bis = new ByteArrayInputStream(visualData);
                     Image image = new Image(bis);
-
                     ImageView imageView = new ImageView(image);
                     imageView.setFitWidth(200);
                     imageView.setFitHeight(200);
@@ -98,7 +108,6 @@ public class CharactersRepoController extends Controller implements Initializabl
                         stage.setScene(scene);
                         stage.show();
                     });
-
                     return new SimpleObjectProperty<>(imageView);
                 } else {
                     System.out.println("visualData es null");
@@ -107,8 +116,17 @@ public class CharactersRepoController extends Controller implements Initializabl
             });
         }
     }
+    /**
+     * This method is used to navigate to the admin menu.
+     * It tries to set the root of the application to the "adminMenu" screen.
+     * If an error occurs during this process, it logs the error.
+     */
     @FXML
-    private void backToAdminMenu() throws IOException {
-        App.setRoot("adminMenu");
+    private void backToAdminMenu() {
+        try {
+            App.setRoot("adminMenu");
+        } catch (IOException e) {
+            ErrorLog.fileRead(e);
+        }
     }
 }

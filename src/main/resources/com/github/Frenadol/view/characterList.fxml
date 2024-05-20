@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="681.0" prefWidth="1702.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.Frenadol.view.CharacterListController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" style="-fx-background-color: grey;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.Frenadol.view.CharacterListController">
+    <stylesheets>
+        <URL value="@characterList.css" />
+    </stylesheets>
     <children>
-        <TableView fx:id="TableView" layoutY="78.0" prefHeight="491.0" prefWidth="1346.0" AnchorPane.bottomAnchor="112.39999999999998" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="358.4000000000001" AnchorPane.topAnchor="78.0">
+        <TableView fx:id="TableView" layoutX="224.0" layoutY="192.8" prefHeight="813.0" prefWidth="1075.0" AnchorPane.bottomAnchor="74.0" AnchorPane.leftAnchor="224.0" AnchorPane.rightAnchor="621.0" AnchorPane.topAnchor="193.0">
             <columns>
                 <TableColumn fx:id="id_CharacterColumn" editable="false" prefWidth="75.0" sortable="false" text="Id_character" />
                 <TableColumn fx:id="nameColumn" prefWidth="75.0" text="Name" />
@@ -18,10 +22,10 @@
                 <TableColumn fx:id="ultraSuperAttackColumn" prefWidth="75.99990844726562" text="UltraSuperAttack" />
                 <TableColumn fx:id="raretyColumn" prefWidth="106.4000244140625" text="Rarety" />
                 <TableColumn fx:id="passiveColumn" minWidth="0.0" prefWidth="71.20001220703125" text="Passive" />
-                <TableColumn fx:id="visualColumn" prefWidth="371.2000488281251" text="Visual" />
+                <TableColumn fx:id="visualColumn" prefWidth="172.79986572265625" text="Visual" />
             </columns>
         </TableView>
-        <Button fx:id="backButton" layoutX="208.0" layoutY="27.0" mnemonicParsing="false" onMouseClicked="#goToMainMenu" text="Volver al menú anterior" />
-      <Button layoutX="455.0" layoutY="40.0" mnemonicParsing="false" onMouseClicked="#sellCharacter" text="Vender Personaje" />
+        <Button fx:id="backButton" layoutX="1325.0" layoutY="256.0" mnemonicParsing="false" onMouseClicked="#goToMainMenu" text="Volver al menú anterior" />
+      <Button layoutX="1341.0" layoutY="506.0" mnemonicParsing="false" onMouseClicked="#sellCharacter" text="Vender Personaje" />
     </children>
 </AnchorPane>
