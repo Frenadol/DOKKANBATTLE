@@ -34,11 +34,6 @@
             </image>
         </ImageView>
         <Button layoutX="1285.0" layoutY="540.0" mnemonicParsing="false" onMouseClicked="#goToAnimationsGallery" styleClass="button" text="GALERIA DE ANIMACIONES" />
-        <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="553.0" layoutY="457.0" onMouseClicked="#switchToCharacterList" pickOnBounds="true" preserveRatio="true">
-            <image>
-                <Image url="@../../../../MediaContent/CharacterList.png" />
-            </image>
-        </ImageView>
         <ImageView fitHeight="177.0" fitWidth="230.0" layoutX="973.0" layoutY="544.0" onMouseClicked="#goToSummonMenu" pickOnBounds="true" preserveRatio="true">
             <image>
                 <Image url="@../../../../MediaContent/Summon.jpeg" />
@@ -60,6 +55,7 @@
             <Font size="19.0" />
          </font>
       </Text>
+      <Button layoutX="588.0" layoutY="532.0" mnemonicParsing="false" onMouseClicked="#switchToCharacterList" text="LISTA DE PERSONAJES" />
     </children>
     <opaqueInsets>
         <Insets />
