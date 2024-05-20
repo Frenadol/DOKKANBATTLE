@@ -19,11 +19,11 @@ public class App extends Application {
     public static AppController currentController;
 
     @Override
-   public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("initialMenu"), 640, 480);
+    public void start(Stage stage) throws IOException {
+        scene = new Scene(loadFXML("initialMenu"), 1920,1080 );
         stage.setScene(scene);
         stage.show();
-            }
+    }
 
 
 

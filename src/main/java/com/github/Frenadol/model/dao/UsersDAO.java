@@ -2,6 +2,7 @@ package com.github.Frenadol.model.dao;
 
 import com.github.Frenadol.model.connection.ConnectionMariaDB;
 import com.github.Frenadol.model.entity.*;
+import com.github.Frenadol.utils.ErrorLog;
 import com.github.Frenadol.view.CharacterListController;
 
 import java.io.IOException;
@@ -26,7 +27,11 @@ public class UsersDAO implements DAO<Users, String> {
     public UsersDAO() {
         conn = ConnectionMariaDB.getConnection();
     }
-
+    /**
+     * Saves a Users object to the database. If the object already exists, it is updated.
+     * @param entity The Users object to save.
+     * @return The saved or updated Users object.
+     */
     @Override
     public Users save(Users entity) {
         if (entity == null) {
@@ -39,7 +44,10 @@ public class UsersDAO implements DAO<Users, String> {
         }
         return entity;
     }
-
+    /**
+     * Inserts a new user into the database.
+     * @param entity The Users object to insert.
+     */
     public void insertUser(Users entity) {
         try (PreparedStatement pst = conn.prepareStatement(INSERT)) {
             pst.setString(1, entity.getName_user());
@@ -52,10 +60,14 @@ public class UsersDAO implements DAO<Users, String> {
             }
             pst.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            ErrorLog.fileRead(e);
         }
     }
-
+    /**
+     * Inserts a character obtained by the user into the database.
+     * @param user The Users object representing the user.
+     * @param characterKey The ID of the obtained character.
+     */
     public void insertObtainedCharacters(Users user, int characterKey) {
         if (user.getId_user() != 0 && characterKey != 0) {
             try {
@@ -70,11 +82,14 @@ public class UsersDAO implements DAO<Users, String> {
                     }
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                ErrorLog.fileRead(e);
             }
         }
     }
-
+    /**
+     * Updates an existing user in the database.
+     * @param entity The Users object to update.
+     */
     public void updateUser(Users entity) {
         try (PreparedStatement pst = conn.prepareStatement(UPDATE)) {
             pst.setString(1, entity.getName_user());
@@ -84,19 +99,30 @@ public class UsersDAO implements DAO<Users, String> {
             pst.setInt(5, entity.getId_user());
             pst.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            ErrorLog.fileRead(e);
         }
     }
-
+    /**
+     * Deletes an obtained character for a user from the database.
+     * @param user The Users object representing the user.
+     * @param characterKey The ID of the character to delete.
+     * @throws SQLException if a database access error occurs.
+     */
     public void deleteObtainedCharacters(Users user, int characterKey) throws SQLException {
         try (PreparedStatement pst = conn.prepareStatement(DELETE_OBTAINED)) {
             pst.setInt(1, user.getId_user());
             pst.setInt(2, characterKey);
             pst.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            ErrorLog.fileRead(e);
         }
     }
+    /**
+     * Finds all characters obtained by a user.
+     * @param users The Users object representing the user.
+     * @return A list of Characters objects obtained by the user.
+     * @throws SQLException if a database access error occurs.
+     */
     public List<Characters> findAllCharacterFromObtained(Users users) throws SQLException {
         List<Characters> result = new ArrayList<>();
         try (PreparedStatement pst = conn.prepareStatement(FIND_ALL_OBTAINED)) {
@@ -117,11 +143,15 @@ public class UsersDAO implements DAO<Users, String> {
                 result.add(character);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
-            throw e;
+            ErrorLog.fileRead(e);
         }
         return result;
     }
+    /**
+     * Finds a user by their ID.
+     * @param id The Users object with the ID to search for.
+     * @return The found Users object, or null if not found.
+     */
     @Override
     public Users findById(Users id) {
         Users result = null;
@@ -139,11 +169,15 @@ public class UsersDAO implements DAO<Users, String> {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            ErrorLog.fileRead(e);
         }
         return result;
     }
-
+    /**
+     * Finds a user by their name.
+     * @param name The name to search for.
+     * @return The found Users object, or null if not found.
+     */
     @Override
     public Users findByName(String name) {
         Users result = null;
@@ -160,17 +194,26 @@ public class UsersDAO implements DAO<Users, String> {
             }
             res.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            ErrorLog.fileRead(e);
         }
 
         return result;
     }
-
+    /**
+     * Finds all users in the database.
+     * @return A list of all Users objects.
+     */
     @Override
     public List<Users> findAll() {
         return null;
     }
 
+
+    /**
+     * Deletes a user from the database.
+     * @param entity The Users object to delete.
+     * @return The deleted Users object, or null if the deletion failed.
+     */
     @Override
     public Users delete(Users entity) {
         if (entity != null) {
@@ -178,18 +221,24 @@ public class UsersDAO implements DAO<Users, String> {
                 pst.setString(1, String.valueOf(entity.getId_user()));
                 pst.executeUpdate();
             } catch (SQLException e) {
-                e.printStackTrace();
+                ErrorLog.fileRead(e);
                 entity = null;
             }
         }
         return entity;
     }
-
+    /**
+     * Closes the DAO, releasing any resources it may be holding.
+     * @throws IOException if an I/O error occurs.
+     */
     @Override
     public void close() throws IOException {
 
     }
-
+    /**
+     * Builds and returns a new UsersDAO instance.
+     * @return A new UsersDAO instance.
+     */
     public static UsersDAO build() {
         return new UsersDAO();
     }
@@ -200,7 +249,10 @@ public class UsersDAO implements DAO<Users, String> {
         public UsersLazyAll(int id_user, String name_user, String password, int dragon_stones, List<Characters> characters_list, boolean admin) {
             super(id_user, name_user, password, dragon_stones, characters_list, admin);
         }
-
+        /**
+         * Finds all characters for the user in a lazy-loaded manner.
+         * @return A list of Characters objects.
+         */
         public List<Characters> UsersLazyAll() {
             List<Characters> result = new ArrayList<>();
             if (super.getCharacters_list()!=null) {
@@ -224,7 +276,7 @@ public class UsersDAO implements DAO<Users, String> {
                     }
                     }
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    ErrorLog.fileRead(e);
                 }
             }
             return result;

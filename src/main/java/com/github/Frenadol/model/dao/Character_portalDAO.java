@@ -4,6 +4,7 @@ import com.github.Frenadol.model.connection.ConnectionMariaDB;
 import com.github.Frenadol.model.entity.Character_portal;
 import com.github.Frenadol.model.entity.Characters;
 import com.github.Frenadol.model.entity.Users;
+import com.github.Frenadol.utils.ErrorLog;
 import com.github.Frenadol.view.SummonsMenuController;
 
 import java.io.IOException;
@@ -32,6 +33,11 @@ public class Character_portalDAO implements DAO<Character_portal, String> {
     }
 
 
+    /**
+     * Saves a Character_portal object to the database. If the object already exists, it is updated.
+     * @param entity The Character_portal object to save.
+     * @return The saved or updated Character_portal object.
+     */
     public Character_portal save(Character_portal entity) {
         if (entity == null || entity.getId_portal() == 0) {
             return null;
@@ -49,6 +55,12 @@ public class Character_portalDAO implements DAO<Character_portal, String> {
 
         return entity;
     }
+    /**
+     * Finds a character in the 'located' table based on the user ID and character ID.
+     * @param idUser The user ID.
+     * @param idCharacter The character ID.
+     * @return The number of the character found.
+     */
 public int findCharacter(int idUser,int idCharacter){
         int numberCharacter=0;
         try(PreparedStatement pst=conn.prepareStatement(FIND_CHARACTER_FROM_LOCATED)){
@@ -63,6 +75,10 @@ public int findCharacter(int idUser,int idCharacter){
         }
     return numberCharacter;
 }
+    /**
+     * Inserts a Character_portal object into the database.
+     * @param entity The Character_portal object to insert.
+     */
     public void insertCharacterPortal(Character_portal entity) {
         try (PreparedStatement pst = conn.prepareStatement(INSERT)) {
             pst.setInt(1, entity.getId_portal());
@@ -72,10 +88,14 @@ public int findCharacter(int idUser,int idCharacter){
             pst.setBytes(5, entity.getBannerImage());
             pst.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            ErrorLog.fileRead(e);
         }
     }
-
+    /**
+     * Inserts character data into the 'located' table.
+     * @param entity The Character_portal object containing the character data.
+     * @param idCharacter The character ID to insert.
+     */
     public void insertIntoLocated(Character_portal entity, int idCharacter) {
         CharactersDAO charactersDAO = new CharactersDAO();
         List<Characters> characters = entity.getFeatured_characters();
@@ -88,12 +108,17 @@ public int findCharacter(int idUser,int idCharacter){
                         pst.setInt(2, entity.getId_portal());
                         pst.executeUpdate();
                     } catch (SQLException e) {
-                        // Handle exception
+                        ErrorLog.fileRead(e);
                     }
                 }
             }
         }
     }
+    /**
+     * Finds all located characters by their ID.
+     * @param id The ID of the character.
+     * @return The Characters object found.
+     */
 public Characters findAllLocated(int  id) {
     Characters characters = new Characters();
     if (id > 0) {
@@ -106,11 +131,11 @@ public Characters findAllLocated(int  id) {
                 characters.setName(set.getString("Name"));
                 characters.setVisual(set.getBytes("Visual"));
 
-
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            ErrorLog.fileRead(e);
+
         }
 
     }
@@ -118,26 +143,37 @@ public Characters findAllLocated(int  id) {
     return characters;
 }
 
-
+    /**
+     * Updates a Character_portal object in the database.
+     * @param entity The Character_portal object to update.
+     */
     public void updateCharacterPortal(Character_portal entity) {
         try (PreparedStatement pst = conn.prepareStatement(UPDATE)) {
             pst.setString(1, entity.getName_portal());
             pst.setInt(2, entity.getId_portal());
             pst.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            ErrorLog.fileRead(e);
         }
     }
-
+    /**
+     * Deletes located character data for a given Character_portal object.
+     * @param entity The Character_portal object whose located data is to be deleted.
+     * @throws SQLException if a database access error occurs.
+     */
     public void deleteLocated(Character_portal entity) throws SQLException {
         try (PreparedStatement pst = conn.prepareStatement(DELETE_LOCATED)) {
             pst.setInt(1, entity.getId_portal());
             pst.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            ErrorLog.fileRead(e);
         }
     }
-
+    /**
+     * Finds a Character_portal object by its ID.
+     * @param id The ID of the Character_portal object.
+     * @return The found Character_portal object, or null if not found.
+     */
     @Override
     public Character_portal findById(Character_portal id) {
         Character_portal result = null;
@@ -154,12 +190,16 @@ public Characters findAllLocated(int  id) {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            ErrorLog.fileRead(e);
         }
         return result;
     }
 
-
+    /**
+     * Finds a Character_portal object by its name.
+     * @param name The name of the Character_portal object.
+     * @return The found Character_portal object, or null if not found.
+     */
     @Override
     public Character_portal findByName(String name) {
         Character_portal result = null;
@@ -173,11 +213,14 @@ public Characters findAllLocated(int  id) {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            ErrorLog.fileRead(e);
         }
         return result;
     }
-
+    /**
+     * Finds all Character_portal objects.
+     * @return A list of all Character_portal objects.
+     */
     @Override
     public List<Character_portal> findAll() {
         List<Character_portal> result = new ArrayList<>();
@@ -191,11 +234,15 @@ public Characters findAllLocated(int  id) {
             }
             res.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            ErrorLog.fileRead(e);
         }
         return result;
     }
-
+    /**
+     * Deletes a Character_portal object from the database.
+     * @param entity The Character_portal object to delete.
+     * @return The deleted Character_portal object, or null if the deletion failed.
+     */
     @Override
     public Character_portal delete(Character_portal entity) {
         if (entity != null) {
@@ -203,7 +250,7 @@ public Characters findAllLocated(int  id) {
                 pst.setInt(1, entity.getId_portal());
                 pst.executeUpdate();
             } catch (SQLException e) {
-                e.printStackTrace();
+                ErrorLog.fileRead(e);
                 entity = null;
             }
         }
@@ -212,12 +259,18 @@ public Characters findAllLocated(int  id) {
 
 
 
-
+    /**
+     * Closes the DAO, releasing any resources it may be holding.
+     * @throws IOException if an I/O error occurs.
+     */
     @Override
     public void close() throws IOException {
 
     }
-
+    /**
+     * Builds and returns a new Character_portalDAO instance.
+     * @return A new Character_portalDAO instance.
+     */
     public static Character_portalDAO build() {
         return new Character_portalDAO();
     }

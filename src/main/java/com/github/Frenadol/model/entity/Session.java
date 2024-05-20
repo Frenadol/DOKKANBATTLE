@@ -6,7 +6,11 @@ public class Session {
     private Session(){
 
     }
-
+    /**
+     * Gets the singleton instance of the Session class.
+     * If the instance doesn't exist, it creates one and logs in the user.
+     * @return The singleton instance of Session.
+     */
     public static Session getInstance(){
         if (_instance==null){
             _instance = new Session();

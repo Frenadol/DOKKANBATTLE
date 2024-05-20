@@ -1,0 +1,24 @@
+/* Estilo para Button */
+.button {
+    -fx-background-color: grey;
+    -fx-alignment: center;
+    -fx-font-family: "Castellar";
+    -fx-font-size: 12;
+    -fx-border-color: #000000;
+    -fx-border-width: 2px;
+    -fx-border-radius: 10px;
+    -fx-padding: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 4, 0.5, 0, 0);
+    -fx-transition: all 0.3s ease;
+}
+
+/* Estilo para Button cuando el mouse está encima */
+.button:hover {
+    -fx-background-color: linear-gradient(to bottom, orange, red);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 6, 0.5, 0, 0);
+}
+
+/* Estilo para Button cuando se presiona */
+.button:pressed {
+    -fx-background-color: grey;
+}

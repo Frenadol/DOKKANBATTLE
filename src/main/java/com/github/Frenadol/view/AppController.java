@@ -18,13 +18,18 @@ public class AppController extends Controller implements Initializable {
     @FXML
     private BorderPane borderPane;
     private Controller centerController;
-
+    /**
+     * This method is called when the view is opened.
+     * It changes the scene to the initial menu.
+     */
     @Override
     public void onOpen(Object input) throws IOException {
-            //Al abrir este controlador que cargue main en el centro
             changeScene(Scenes.INITIALMENU,null);
     }
-
+    /**
+     * This method is used to change the scene.
+     * It loads the specified scene, sets it as the center of the border pane, and opens it with the provided data.
+     */
     public void changeScene(Scenes scene,Object data) throws IOException {
         View view = loadFXML(scene);
         borderPane.setCenter(view.scene);
@@ -32,31 +37,27 @@ public class AppController extends Controller implements Initializable {
         this.centerController.onOpen(data);
     }
 
-    public void openModal(Scenes scene, String title,Controller parent, Object data) throws IOException {
-        View view = loadFXML(scene);
-        Stage stage = new Stage();
-        stage.setTitle(title);
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.initOwner(App.stage);
-        Scene _scene = new Scene(view.scene);
-        stage.setScene(_scene);
-        view.controller.onOpen(parent);
-        stage.showAndWait();
-        //podríamos leer que ha devuelto...
-
-    }
 
 
+    /**
+     * This method is called when the view is closed.
+     * Currently, it does not perform any actions.
+     */
     @Override
     public void onClose(Object output) {
-        //nothing to do
     }
-
+    /**
+     * This method is called to initialize the controller after its root element has been completely processed.
+     * Currently, it does not perform any actions.
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
     }
-
+    /**
+     * This method is used to load a scene from an FXML file.
+     * It creates a new FXMLLoader, loads the FXML file, and returns a new View object containing the loaded scene and its controller.
+     */
     public static View loadFXML(Scenes scenes) throws IOException {
         String url = scenes.getURL();
         System.out.println(url);
@@ -68,7 +69,10 @@ public class AppController extends Controller implements Initializable {
         view.controller=c;
         return view;
     }
-
+    /**
+     * This method is used to close the application.
+     * It calls the exit method of the System class, which terminates the Java Virtual Machine.
+     */
     @FXML
     private void closeApp(){
         System.exit(0);

@@ -8,6 +8,11 @@ import java.io.IOException;
 
 public class ImageUtils {
 
+    /**
+     * Converts an image file to a byte array.
+     * @param imagePath The path to the image file.
+     * @return The byte array representing the image, or null if conversion fails.
+     */
     public static byte[] imageToBytes(String imagePath) {
         File imageFile = new File(imagePath);
         if (!imageFile.exists()) {
