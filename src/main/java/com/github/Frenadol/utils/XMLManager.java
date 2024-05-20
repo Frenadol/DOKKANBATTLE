@@ -11,7 +11,7 @@ public class XMLManager {
     /**
      * Write an object to an XML file.
      * @param <T>       The type of the object.
-     * @param object    The object to write.
+     * @param c   The object to write.
      * @param filename  The name of the file to write to.
      * @return True if writing was successful, false otherwise.
      */
@@ -33,7 +33,7 @@ public class XMLManager {
     /**
      * Read an object from an XML file.
      * @param <T>       The type of the object.
-     * @param object    The object to read into.
+     * @param c    The object to read into.
      * @param filename  The name of the file to read from.
      * @return The object read from the XML file.
      */
